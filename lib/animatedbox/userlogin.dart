@@ -2,9 +2,6 @@ import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
-import 'package:http/http.dart' as http;
-
-
 
 class UserLoginForm extends StatefulWidget {
   const UserLoginForm({Key? key}) : super(key: key);
@@ -21,14 +18,12 @@ class _UserLoginFormState extends State<UserLoginForm> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _reEnterPasswordController = TextEditingController();
 
   String userName = '';
   String userEmail = '';
   String phoneNumber = '';
-  String address = '';
   String password = '';
   String reEnterPassword = '';
 
@@ -61,12 +56,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
       });
     });
 
-    _addressController.addListener(() {
-      setState(() {
-        address = _addressController.text;
-      });
-    });
-
     _passwordController.addListener(() {
       setState(() {
         password = _passwordController.text;
@@ -85,7 +74,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
     _userNameController.dispose();
     _userEmailController.dispose();
     _phoneNumberController.dispose();
-    _addressController.dispose();
     _passwordController.dispose();
     _reEnterPasswordController.dispose();
     super.dispose();
@@ -101,7 +89,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
     );
   }
 
-  Future<void> userRegistration() async {
+  /*Future<void> userRegistration() async {
     if (_formkey.currentState!.validate()) {
 
       var request = http.MultipartRequest('POST', Uri.parse('https://absolutestay.co.in/api/user_registration'));
@@ -128,7 +116,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
     } else {
       showToast('Fill all fields');
     }
-  }
+  }*/
 
 
   @override
@@ -226,18 +214,6 @@ class _UserLoginFormState extends State<UserLoginForm> {
                 ),
                 const SizedBox(height: 20),
                 InputField(
-                  title: 'Address',
-                  isSecured: false,
-                  controller: _addressController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Address is required';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                InputField(
                   title: 'Password',
                   isSecured: true,
                   controller: _passwordController,
@@ -271,7 +247,11 @@ class _UserLoginFormState extends State<UserLoginForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      onPressed: userRegistration,
+                      onPressed: (){
+                        if (_formkey.currentState!.validate()) {
+                          showToast('Registered Successfully');
+                        }
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {

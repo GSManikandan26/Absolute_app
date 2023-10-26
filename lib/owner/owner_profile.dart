@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart' as http;
 
 class OwnerProfileScreen extends StatefulWidget {
   const OwnerProfileScreen({Key? key});
@@ -16,11 +16,21 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
   final TextEditingController _mobileController = TextEditingController(text: "Enter Your Email");
   final TextEditingController _addressController = TextEditingController(text: "Enter Your Address");
   final TextEditingController _cityController = TextEditingController(text: "Enter Your City");
-  final TextEditingController _pincodeController = TextEditingController(text: "Enter Your Pincode");
-  final TextEditingController _profileImageController = TextEditingController(text: "Enter Your Image URL");
+  final TextEditingController _pincodeController = TextEditingController(text: "Enter Your Pin code");
+
   bool _isEditing = false;
 
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +99,6 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
               controller: _pincodeController,
             ),
             const SizedBox(height: 15.0),
-            buildEditableField(
-              title: 'Profile Image',
-              controller: _profileImageController,
-            ),
-            const SizedBox(height: 15.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -120,7 +125,8 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                 ElevatedButton(
                   onPressed: _isEditing
                       ? () async {
-                    final response = await http.post(
+                    showToast('Profile Updated Successfully');
+                    /*final response = await http.post(
                       Uri.parse('https://absolutestay.co.in/api/profile_update'),
                       body: {
                         'user_id': _userIdController.text,
@@ -143,7 +149,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                     } else {
                       // Handle errors
                       print('Failed to update profile. Status code: ${response.statusCode}');
-                    }
+                    }*/
                   }
                       : null, // Disable the button if not editing
                   style: ButtonStyle(

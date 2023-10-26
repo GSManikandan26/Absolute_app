@@ -1,4 +1,5 @@
 import 'package:absolute_stay/home/PropertyListingPage.dart';
+import 'package:absolute_stay/user/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -11,7 +12,6 @@ import '../about/about.dart';
 import '../about/contact.dart';
 import '../usable/ImageCarousel.dart';
 import '../usable/card_area.dart';
-import '../icon/profile.dart';
 import 'BookingHistoryPage.dart';
 import 'FavoritesPage.dart';
 import 'user_search.dart';
@@ -329,7 +329,7 @@ class _UserHomePageState extends State<UserHomePage> {
                 ],
               ),
               const UserSearchScreen(),
-              const ProfileScreen(),
+              const UserProfileScreen(),
             ],
           ),
           Align(

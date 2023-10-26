@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({Key? key}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _UserProfileScreenState createState() => _UserProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _UserProfileScreenState extends State<UserProfileScreen> {
   final TextEditingController _userIdController = TextEditingController(text: "Enter User ID");
   final TextEditingController _nameController = TextEditingController(text: "Enter Your Name");
   final TextEditingController _emailController = TextEditingController(text: "Enter Your Email");
@@ -17,10 +17,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _addressController = TextEditingController(text: "Enter Your Address");
   final TextEditingController _cityController = TextEditingController(text: "Enter Your City");
   final TextEditingController _pincodeController = TextEditingController(text: "Enter Your Pincode");
-  final TextEditingController _profileImageController = TextEditingController(text: "Enter Your Image URL");
+
   bool _isEditing = false;
 
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               controller: _pincodeController,
             ),
             const SizedBox(height: 15.0),
-            buildEditableField(
-              title: 'Profile Image',
-              controller: _profileImageController,
-            ),
-            const SizedBox(height: 15.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -120,7 +125,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ElevatedButton(
                   onPressed: _isEditing
                       ? () async {
-                    final response = await http.post(
+                    showToast('Profile Updated Successfully');
+                    /*final response = await http.post(
                       Uri.parse('https://absolutestay.co.in/api/profile_update'),
                       body: {
                         'user_id': _userIdController.text,
@@ -130,7 +136,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         'address': _addressController.text,
                         'city': _cityController.text,
                         'pincode': _pincodeController.text,
-                        'profile_image': _profileImageController.text,
                       },
                     );
 
@@ -143,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     } else {
                       // Handle errors
                       print('Failed to update profile. Status code: ${response.statusCode}');
-                    }
+                    }*/
                   }
                       : null, // Disable the button if not editing
                   style: ButtonStyle(

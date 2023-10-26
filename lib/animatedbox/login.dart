@@ -1,5 +1,6 @@
 import 'package:absolute_stay/animatedbox/login_options.dart';
 import 'package:absolute_stay/owner/addProperty.dart';
+import 'package:absolute_stay/sub_vendor/sub_vendor_homepage.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:absolute_stay/user/user_home.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final bool _isLoggingIn = false;
 
   @override
   void initState() {
@@ -51,7 +51,74 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  void _loginUser(BuildContext context) async {
+  void _loginUser(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevent dialog dismissal while logging in
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+
+      // Simulate a login delay (Replace this with your actual login logic)
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pop(); // Close the progress indicator dialog
+
+        if (email == 'user@gmail.com' && password == 'user') {
+          // Redirect to user-specific page
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const UserHomePage(), // Replace with your user page
+            ),
+          );
+        }
+        else if (email == 'owner@gmail.com' && password == 'owner') {
+          // Redirect to owner-specific page
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const AddProperty(), // Replace with your owner page
+            ),
+          );
+        }
+        else if (email == 'vendor@gmail.com' && password == 'vendor') {
+          // Redirect to owner-specific page
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) =>  SubVendorHomePage(), // Replace with your owner page
+            ),
+          );
+        }
+        else {
+          // Invalid email/password combination, show an error message
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Login Error'),
+                content: const Text('Invalid email or password.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
+    }
+  }
+
+  /*void _loginUser(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
 
 
@@ -79,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         }
     }
-  }
+  }*/
 
   void _showAnimatedDialog(BuildContext context, var val) {
     Navigator.of(context).pop(); // Close the current dialog

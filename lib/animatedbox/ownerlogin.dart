@@ -2,8 +2,7 @@ import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 
 class OwnerLoginForm extends StatefulWidget {
   const OwnerLoginForm({Key? key});
@@ -20,14 +19,12 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
   final TextEditingController _ownerNameController = TextEditingController();
   final TextEditingController _ownerEmailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _reEnterPasswordController = TextEditingController();
 
   String ownerName = '';
   String ownerEmail = '';
   String phoneNumber = '';
-  String address = '';
   String password = '';
   String reEnterPassword = '';
 
@@ -38,7 +35,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     super.initState();
     Future.delayed(const Duration(milliseconds: 50), () {
       setState(() {
-        _dialogHeight = 800; // Set your preferred height
+        _dialogHeight = 800;
       });
     });
 
@@ -61,11 +58,6 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
       });
     });
 
-    _addressController.addListener(() {
-      setState(() {
-        address = _addressController.text;
-      });
-    });
 
     _passwordController.addListener(() {
       setState(() {
@@ -85,7 +77,6 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     _ownerNameController.dispose();
     _ownerEmailController.dispose();
     _phoneNumberController.dispose();
-    _addressController.dispose();
     _passwordController.dispose();
     _reEnterPasswordController.dispose();
     super.dispose();
@@ -101,7 +92,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     );
   }
 
-  Future<void> ownerRegistration() async {
+  /*Future<void> ownerRegistration() async {
     if (_formkey.currentState!.validate()) {
       var request = http.MultipartRequest('POST', Uri.parse('https://absolutestay.co.in/api/vendor_registration'));
 
@@ -126,7 +117,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     } else {
       showToast('Fill all fields');
     }
-  }
+  }*/
 
 
   @override
@@ -212,6 +203,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20),
                 CustomTextField(
                   title: 'Phone Number',
@@ -225,20 +217,6 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                   },
                   keyboardType: TextInputType.phone,
                   errorTextStyle: const TextStyle(color: Colors.red),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                InputField(
-                  title: 'Address',
-                  isSecured: false,
-                  controller: _addressController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Address is required';
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -278,7 +256,11 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      onPressed: ownerRegistration, // Call the registration function
+                      onPressed: (){
+                        if (_formkey.currentState!.validate()) {
+                          showToast('Registered Successfully');
+                        }
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {
