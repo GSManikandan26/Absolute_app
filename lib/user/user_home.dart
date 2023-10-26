@@ -171,7 +171,7 @@ class _UserHomePageState extends State<UserHomePage> {
                           top: 24.0, bottom: 10.0, right: 12, left: 12),
                       child: Column(
                         children: [
-                          ImageCarousel(),
+                          const ImageCarousel(),
                           const SizedBox(height: 40),
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -429,7 +429,7 @@ class _UserHomePageState extends State<UserHomePage> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.report),
-                  title: const Text('Raise Issue'),
+                  title: const Text('Raise Ticket / Ticket Status'),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -440,23 +440,23 @@ class _UserHomePageState extends State<UserHomePage> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.info),
-                  title: const Text('About Us'),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const AboutPage(),
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
                   leading: const Icon(Icons.contact_mail),
                   title: const Text('Contact Us'),
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const ContactPage(),
+                      ),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text('About Us'),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AboutPage(),
                       ),
                     );
                   },

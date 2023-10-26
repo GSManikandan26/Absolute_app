@@ -36,7 +36,7 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title:  Text('Profile',style: TextStyle(color: customColor,fontSize: 25),),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -45,17 +45,6 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Center(
-              child: Text(
-                'Profile',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: customColor,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0),
             ClipOval(
               child: Lottie.asset(
                 'images/profile.json', // Replace with your animation file path
@@ -116,40 +105,21 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                           return const Color.fromRGBO(33, 84, 115, 1.0);
                         }
                         return const Color.fromRGBO(33, 37, 41, 1.0);
-
                       },
                     ),
                   ),
-                  child: Text(_isEditing ? 'Cancel' : 'Edit', style: TextStyle(color: Colors.white)),
+                  child: Text(_isEditing ? 'Cancel' : 'Edit', style: const TextStyle(color: Colors.white)),
                 ),
                 ElevatedButton(
                   onPressed: _isEditing
                       ? () async {
                     showToast('Profile Updated Successfully');
-                    /*final response = await http.post(
-                      Uri.parse('https://absolutestay.co.in/api/profile_update'),
-                      body: {
-                        'user_id': _userIdController.text,
-                        'name': _nameController.text,
-                        'email': _emailController.text,
-                        'mobile': _mobileController.text,
-                        'address': _addressController.text,
-                        'city': _cityController.text,
-                        'pincode': _pincodeController.text,
-                        'profile_image': _profileImageController.text,
-                      },
-                    );
+                    /* Perform save operation here */
 
-                    if (response.statusCode == 200) {
-                      // Successful request
-                      print('Profile updated successfully.');
-                      setState(() {
-                        _isEditing = false; // Disable editing mode after saving
-                      });
-                    } else {
-                      // Handle errors
-                      print('Failed to update profile. Status code: ${response.statusCode}');
-                    }*/
+                    // Disable editing mode after saving
+                    setState(() {
+                      _isEditing = false;
+                    });
                   }
                       : null, // Disable the button if not editing
                   style: ButtonStyle(

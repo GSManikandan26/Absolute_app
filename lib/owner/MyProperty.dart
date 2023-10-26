@@ -13,27 +13,19 @@ class _MyPropertyAppState extends State<MyPropertyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Property'),
+        title: Text('My Property',style: TextStyle(color: customColor,fontSize: 25),),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(15.0),
           child: Align(
             alignment: Alignment.topCenter,
             child: Column(
               children: [
-                Text(
-                  'My Property',
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold,
-                    color: customColor,
-                  ),
-                ),
-                const SizedBox(height: 30,),
-                const OwnerCustomSwitch(), // This is your custom switch widget.
+                SizedBox(height: 30,),
+                OwnerCustomSwitch(), // This is your custom switch widget.
               ],
             ),
           ),

@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/owner/SuccessScreen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
@@ -39,6 +41,34 @@ class _AddPropertyState extends State<AddProperty> {
     'Ticket list': Icons.receipt,
     'logout': Icons.exit_to_app,
   };
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
+  }
+
+  void _launchPhone(String phoneNumber) async {
+    final Uri uri = Uri.parse('tel:$phoneNumber');
+    if (!await launcher.launchUrl(uri)) {
+      await launcher.launchUrl(uri);
+    } else {
+      debugPrint("Could not launch the phone app");
+    }
+  }
+
+  void _launchEmail(String email) async {
+    final Uri uri = Uri.parse('mailto:$email');
+    if (!await launcher.launchUrl(uri)) {
+      await launcher.launchUrl(uri);
+    } else {
+      debugPrint("Could not launch the email app");
+    }
+  }
 
   void handleDrawerSelection(String value, BuildContext context) {
     switch (value) {
@@ -121,12 +151,10 @@ class _AddPropertyState extends State<AddProperty> {
   ];
 
   TextEditingController propertyNameController = TextEditingController();
-  TextEditingController streetAddressController = TextEditingController();
-  TextEditingController unitAddressController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController zipcodeController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController landmarkController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController roomTypeNameController = TextEditingController();
   TextEditingController roomPriceController = TextEditingController();
 
 
@@ -205,6 +233,27 @@ class _AddPropertyState extends State<AddProperty> {
                 onTap: () {
                   handleDrawerSelection('adminServices', context);
                 },
+              ),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('About Us'),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AboutPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.phone),
+                title: const Text('+91 7845745809'),
+                onTap: () => _launchPhone('+917845745809'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.email),
+                title: const Text('helpdesk@absolutestay.co.in'),
+                onTap: () => _launchEmail('helpdesk@absolutestay.co.in'),
               ),
               ListTile(
                 leading: Icon(menuIcons['logout']),
@@ -316,29 +365,22 @@ class _AddPropertyState extends State<AddProperty> {
                     height: 20,
                   ),
                   _buildInputField(
-                    title: 'Street Address',
-                    controller: streetAddressController,
+                    title: 'Address',
+                    controller: addressController,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   _buildInputField(
-                    title: 'Unit Address',
-                    controller: unitAddressController,
+                    title: 'Landmark',
+                    controller: landmarkController,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   _buildInputField(
-                    title: 'Country',
-                    controller: countryController,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _buildInputField(
-                    title: 'Zipcode',
-                    controller: zipcodeController,
+                    title: 'Pincode',
+                    controller: pincodeController,
                   ),
                   const SizedBox(
                     height: 20,
@@ -518,13 +560,6 @@ class _AddPropertyState extends State<AddProperty> {
                       "Upload Images",
                       style: TextStyle(color: Colors.white),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  _buildInputField(
-                    title: 'Room Type Name',
-                    controller: roomTypeNameController,
                   ),
                   const SizedBox(
                     height: 20,
@@ -783,6 +818,7 @@ class _AddPropertyState extends State<AddProperty> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          showToast('Saved Successfully');
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -795,7 +831,7 @@ class _AddPropertyState extends State<AddProperty> {
                           ),
                         ),
                         child: const Text(
-                          'Save and Exit',
+                          'Save for later',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

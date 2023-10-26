@@ -4,8 +4,6 @@ import 'package:absolute_stay/sub_vendor/sub_vendor_homepage.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:absolute_stay/user/user_home.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'forgetpassword.dart';
 
 class LoginScreen extends StatefulWidget {

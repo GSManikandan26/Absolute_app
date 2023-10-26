@@ -34,7 +34,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
     super.initState();
     Future.delayed(const Duration(milliseconds: 50), () {
       setState(() {
-        _dialogHeight = 800; // Set your preferred height
+        _dialogHeight = 720;
       });
     });
 

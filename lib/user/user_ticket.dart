@@ -1,3 +1,4 @@
+import 'package:absolute_stay/usable/issue_notification.dart';
 import 'package:flutter/material.dart';
 import '../../usable/input_field.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -88,9 +89,12 @@ class UserTicket extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Raise Your Ticket'),
         centerTitle: true,
-        backgroundColor:  Colors.white,
+        backgroundColor: Colors.white,
+        actions: const [
+          NotificationPopupMenu(),
+        ],
       ),
-      body: SingleChildScrollView(
+        body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -98,7 +102,7 @@ class UserTicket extends StatelessWidget {
             child: Column(
               children: [
                 InputField(
-                  title: 'Full Name',
+                  title: 'Your Name',
                   isSecured: false,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -144,7 +148,7 @@ class UserTicket extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0,),// Add a TextField for Description
                 CustomTextField(
-                  title: 'Description',
+                  title: 'Description(Optional)',
                   maxLines: 5, // Allow multiple lines of text
                   maxLength: 200,
                   validator: (value) {
@@ -183,11 +187,11 @@ class UserTicket extends StatelessWidget {
   }
   Future<void> _UserTicket() async {
     Fluttertoast.showToast(
-      msg: 'Vacant List Updated Successfully!',
+      msg: 'Your issue ticket has been raised successfully!',
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM_RIGHT,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.black,
       textColor: Colors.white,
       webShowClose: true,
       webBgColor: "linear-gradient(to right, #ffaa00, #ff7700)",

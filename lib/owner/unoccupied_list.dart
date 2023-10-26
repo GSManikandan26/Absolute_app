@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
 
-class ApprovedContent extends StatefulWidget {
-  const ApprovedContent({Key? key}) : super(key: key);
+class UnoccupiedList extends StatefulWidget {
+  const UnoccupiedList({super.key});
 
   @override
-  State<ApprovedContent> createState() => _ApprovedContentState();
+  State<UnoccupiedList> createState() => _UnoccupiedListState();
 }
 
 Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
-class _ApprovedContentState extends State<ApprovedContent> {
+class _UnoccupiedListState extends State<UnoccupiedList> {
   List<PropertyCardData> propertyData = [
     PropertyCardData(
       image: 'images/image1.png',
-      title: 'Hilton Vienna Park',
+      roomNumber: '1 (2BHK)',
       price: '₹2,800 / Day',
-      type: 'Hotel',
+      type: 'Apartment',
       location: 'Chennai',
       isPublished: true,
       starRating: 4.5,
     ),
     PropertyCardData(
       image: 'images/image2.png',
-      title: 'Hotel XYZ',
+      roomNumber: '1 (2BHK)',
       price: '₹2,500 / Day',
-      type: 'Hotel',
+      type: 'Apartment',
       location: 'Chennai',
       isPublished: false,
       starRating: 3.8,
     ),
     PropertyCardData(
       image: 'images/image3.png',
-      title: 'Sunset Resorts',
+      roomNumber: '3 (2 Sharing)',
       price: '₹3,500 / Day',
-      type: 'Commercial Space',
+      type: 'PG',
       location: 'Chennai',
       isPublished: true,
       starRating: 4.2,
     ),
     PropertyCardData(
       image: 'images/image4.png',
-      title: 'City Suites',
+      roomNumber: '3 (2 Sharing)',
       price: '₹2,200 / Day',
-      type: 'Resort',
+      type: 'PG',
       location: 'Chennai',
       isPublished: true,
       starRating: 4.0,
@@ -68,7 +68,7 @@ class _ApprovedContentState extends State<ApprovedContent> {
               children: [
                 PropertyCard(
                   image: data.image,
-                  title: data.title,
+                  roomNumber: data.roomNumber,
                   price: data.price,
                   type: data.type,
                   location: data.location,
@@ -90,7 +90,7 @@ class _ApprovedContentState extends State<ApprovedContent> {
 
 class PropertyCardData {
   final String image;
-  final String title;
+  final String roomNumber;
   final String price;
   final String type;
   final String location;
@@ -99,7 +99,7 @@ class PropertyCardData {
 
   PropertyCardData({
     required this.image,
-    required this.title,
+    required this.roomNumber,
     required this.price,
     required this.type,
     required this.location,
@@ -110,7 +110,7 @@ class PropertyCardData {
 
 class PropertyCard extends StatelessWidget {
   final String image;
-  final String title;
+  final String roomNumber;
   final String price;
   final String type;
   final String location;
@@ -121,7 +121,7 @@ class PropertyCard extends StatelessWidget {
   const PropertyCard({
     Key? key,
     required this.image,
-    required this.title,
+    required this.roomNumber,
     required this.price,
     required this.type,
     required this.location,
@@ -153,7 +153,7 @@ class PropertyCard extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 color: isPublished ? Colors.green : Colors.red,
                 child: Text(
-                  isPublished ? "Published" : "Unpublished",
+                  isPublished ? "Occupied" : "Unoccupied",
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -162,10 +162,11 @@ class PropertyCard extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.bottomRight,
+
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100, // Replace with your desired background color
-                     // Optional: Add rounded corners
+                    // Optional: Add rounded corners
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Row(
@@ -191,14 +192,15 @@ class PropertyCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  roomNumber,
                   style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                     Icon(Icons.location_on,
-                      color: customColor,
+                    Icon(
+                      Icons.location_on,
+                      color: customColor, // Set the custom color here
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -209,8 +211,9 @@ class PropertyCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 20),
-                     Icon(Icons.home,
-                      color: customColor,
+                    Icon(
+                      Icons.home,
+                      color: customColor, // Set the custom color here
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -226,36 +229,20 @@ class PropertyCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle Edit button press
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.pressed)) {
-                              return const Color.fromRGBO(33, 84, 115, 1.0);
-                            }
-                            return const Color.fromRGBO(33, 37, 41, 1.0);
-                          },
+                    Card(
+                      elevation: 3,
+                      color: Colors.grey.shade100, // Change the color as needed
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Available Now',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                      child: const Text("Edit", style: TextStyle(color: Colors.white)),
-                    ),
-                    ElevatedButton(
-                      onPressed: onPressed,
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.pressed)) {
-                              return const Color.fromRGBO(33, 37, 41, 1.0);
-                            }
-                            return const Color.fromRGBO(33, 84, 115, 1.0);
-                          },
-                        ),
-                      ),
-                      child: Text(isPublished ? "Unpublish" : "Publish", style: const TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),

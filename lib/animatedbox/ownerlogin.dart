@@ -35,11 +35,10 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     super.initState();
     Future.delayed(const Duration(milliseconds: 50), () {
       setState(() {
-        _dialogHeight = 800;
+        _dialogHeight = 720;
       });
     });
 
-    // Add onChanged listeners to update string variables
     _ownerNameController.addListener(() {
       setState(() {
         ownerName = _ownerNameController.text;

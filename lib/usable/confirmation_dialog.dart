@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class ExitConfirmationDialog extends StatelessWidget {
-  Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
+class ExitConfirmationDialog extends StatefulWidget {
   final Function onConfirm;
 
-  ExitConfirmationDialog({required this.onConfirm});
+  const ExitConfirmationDialog({super.key, required this.onConfirm});
+
+  @override
+  State<ExitConfirmationDialog> createState() => _ExitConfirmationDialogState();
+}
+
+class _ExitConfirmationDialogState extends State<ExitConfirmationDialog> {
+  Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Exit App?'),
-      content: Text('Are you sure you want to exit the app?'),
+      title: const Text('Exit App?'),
+      content: const Text('Are you sure you want to exit the app?'),
       actions: <Widget>[
         TextButton(
           onPressed: () {
@@ -24,7 +29,7 @@ class ExitConfirmationDialog extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            onConfirm();
+            widget.onConfirm();
           },
           child: Text('Exit',
             style: TextStyle(color: customColor,

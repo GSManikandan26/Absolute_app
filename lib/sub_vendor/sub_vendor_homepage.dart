@@ -1,3 +1,4 @@
+import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/sub_vendor/ListingManagementPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -20,6 +21,25 @@ class SubVendorHomePage extends StatelessWidget {
     'Owner Profile': Icons.perm_identity,
     'logout': Icons.exit_to_app,
   };
+
+  void _launchPhone(String phoneNumber) async {
+    final Uri uri = Uri.parse('tel:$phoneNumber');
+    if (!await launcher.launchUrl(uri)) {
+      await launcher.launchUrl(uri);
+    } else {
+      debugPrint("Could not launch the phone app");
+    }
+  }
+
+  void _launchEmail(String email) async {
+    final Uri uri = Uri.parse('mailto:$email');
+    if (!await launcher.launchUrl(uri)) {
+      await launcher.launchUrl(uri);
+    } else {
+      debugPrint("Could not launch the email app");
+    }
+  }
+
 
   void handleDrawerSelection(String value, BuildContext context) {
     switch (value) {
@@ -121,6 +141,27 @@ class SubVendorHomePage extends StatelessWidget {
                 onTap: () {
                   handleDrawerSelection('Subscription Plans', context);
                 },
+              ),
+              ListTile(
+                leading: const Icon(Icons.info),
+                title: const Text('About Us'),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AboutPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.phone),
+                title: const Text('+91 7845745809'),
+                onTap: () => _launchPhone('+917845745809'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.email),
+                title: const Text('helpdesk@absolutestay.co.in'),
+                onTap: () => _launchEmail('helpdesk@absolutestay.co.in'),
               ),
               ListTile(
                 leading: Icon(menuIcons['logout']),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -25,6 +26,16 @@ class _ContactPageState extends State<ContactPage> {
     phoneController.dispose();
     descriptionController.dispose();
     super.dispose();
+  }
+
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
   }
 
   @override
@@ -212,7 +223,7 @@ class _ContactPageState extends State<ContactPage> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            // Handle the send message logic here
+                            showToast('Form Submitted Successfully');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: customColor, // Change this to your desired color

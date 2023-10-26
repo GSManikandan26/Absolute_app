@@ -1,57 +1,57 @@
 import 'package:flutter/material.dart';
 
-class ApprovedContent extends StatefulWidget {
-  const ApprovedContent({Key? key}) : super(key: key);
+class OccupiedList extends StatefulWidget {
+  const OccupiedList({super.key});
 
   @override
-  State<ApprovedContent> createState() => _ApprovedContentState();
+  State<OccupiedList> createState() => _OccupiedListState();
 }
 
 Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
-class _ApprovedContentState extends State<ApprovedContent> {
+class _OccupiedListState extends State<OccupiedList> {
   List<PropertyCardData> propertyData = [
     PropertyCardData(
       image: 'images/image1.png',
-      title: 'Hilton Vienna Park',
+      roomNumber: '1 (2BHK)',
       price: '₹2,800 / Day',
-      type: 'Hotel',
+      type: 'Apartment',
       location: 'Chennai',
-      isPublished: true,
+      isOccupied: true,
       starRating: 4.5,
     ),
     PropertyCardData(
       image: 'images/image2.png',
-      title: 'Hotel XYZ',
+      roomNumber: '2 (3BHK)',
       price: '₹2,500 / Day',
-      type: 'Hotel',
+      type: 'Apartment',
       location: 'Chennai',
-      isPublished: false,
+      isOccupied: false,
       starRating: 3.8,
     ),
     PropertyCardData(
       image: 'images/image3.png',
-      title: 'Sunset Resorts',
+      roomNumber: '3 (2 Sharing)',
       price: '₹3,500 / Day',
-      type: 'Commercial Space',
+      type: 'PG',
       location: 'Chennai',
-      isPublished: true,
+      isOccupied: true,
       starRating: 4.2,
     ),
     PropertyCardData(
       image: 'images/image4.png',
-      title: 'City Suites',
+      roomNumber: '4 (4 Sharing)',
       price: '₹2,200 / Day',
-      type: 'Resort',
+      type: 'PG',
       location: 'Chennai',
-      isPublished: true,
+      isOccupied: true,
       starRating: 4.0,
     ),
   ];
 
   void togglePublishStatus(int index) {
     setState(() {
-      propertyData[index].isPublished = !propertyData[index].isPublished;
+      propertyData[index].isOccupied = !propertyData[index].isOccupied;
     });
   }
 
@@ -68,11 +68,11 @@ class _ApprovedContentState extends State<ApprovedContent> {
               children: [
                 PropertyCard(
                   image: data.image,
-                  title: data.title,
+                  roomNumber: data.roomNumber,
                   price: data.price,
                   type: data.type,
                   location: data.location,
-                  isPublished: data.isPublished,
+                  isOccupied: data.isOccupied,
                   starRating: data.starRating,
                   onPressed: () {
                     togglePublishStatus(index);
@@ -90,42 +90,42 @@ class _ApprovedContentState extends State<ApprovedContent> {
 
 class PropertyCardData {
   final String image;
-  final String title;
+  final String roomNumber;
   final String price;
   final String type;
   final String location;
-  bool isPublished;
+  bool isOccupied;
   final double starRating;
 
   PropertyCardData({
     required this.image,
-    required this.title,
+    required this.roomNumber,
     required this.price,
     required this.type,
     required this.location,
-    required this.isPublished,
+    required this.isOccupied,
     required this.starRating,
   });
 }
 
 class PropertyCard extends StatelessWidget {
   final String image;
-  final String title;
+  final String roomNumber;
   final String price;
   final String type;
   final String location;
-  final bool isPublished;
+  final bool isOccupied;
   final double starRating;
   final VoidCallback onPressed;
 
   const PropertyCard({
     Key? key,
     required this.image,
-    required this.title,
+    required this.roomNumber,
     required this.price,
     required this.type,
     required this.location,
-    required this.isPublished,
+    required this.isOccupied,
     required this.starRating,
     required this.onPressed,
   }) : super(key: key);
@@ -151,9 +151,9 @@ class PropertyCard extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.all(8.0),
-                color: isPublished ? Colors.green : Colors.red,
+                color: isOccupied ? Colors.green : Colors.red,
                 child: Text(
-                  isPublished ? "Published" : "Unpublished",
+                  isOccupied ? "Occupied" : "Unoccupied",
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -165,7 +165,7 @@ class PropertyCard extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.grey.shade100, // Replace with your desired background color
-                     // Optional: Add rounded corners
+                    // Optional: Add rounded corners
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Row(
@@ -191,13 +191,13 @@ class PropertyCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  roomNumber,
                   style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                     Icon(Icons.location_on,
+                    Icon(Icons.location_on,
                       color: customColor,
                     ),
                     const SizedBox(width: 5),
@@ -209,7 +209,7 @@ class PropertyCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 20),
-                     Icon(Icons.home,
+                    Icon(Icons.home,
                       color: customColor,
                     ),
                     const SizedBox(width: 5),
@@ -255,7 +255,7 @@ class PropertyCard extends StatelessWidget {
                           },
                         ),
                       ),
-                      child: Text(isPublished ? "Unpublish" : "Publish", style: const TextStyle(color: Colors.white)),
+                      child: Text(isOccupied ? "Unoccupied" : "Occupied", style: const TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class ImageCarousel extends StatefulWidget {
+  const ImageCarousel({super.key});
+
   @override
   _ImageCarouselState createState() => _ImageCarouselState();
 }
@@ -74,6 +76,8 @@ class _ImageCarouselState extends State<ImageCarousel> {
 }
 
 class ImageCarousel1 extends StatefulWidget {
+  const ImageCarousel1({super.key});
+
   @override
   _ImageCarousel1State createState() => _ImageCarousel1State();
 }
@@ -95,7 +99,6 @@ class _ImageCarousel1State extends State<ImageCarousel1> {
       children: [
         CarouselSlider(
           items: assetImagePaths.map((assetPath) {
-            int index = assetImagePaths.indexOf(assetPath);
             return Builder(
               builder: (BuildContext context) {
                 return Container(

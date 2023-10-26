@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 
 class SubVendorProfileScreen extends StatefulWidget {
@@ -9,119 +10,137 @@ class SubVendorProfileScreen extends StatefulWidget {
 }
 
 class _SubVendorProfileScreenState extends State<SubVendorProfileScreen> {
-  final TextEditingController _nameController =
-  TextEditingController(text: "John Doe");
-  final TextEditingController _phoneNumberController =
-  TextEditingController(text: "+1234567890");
-  final TextEditingController _emailController =
-  TextEditingController(text: "john@example.com");
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _pincodeController = TextEditingController();
 
-  final bool _isEditingName = false;
-  final bool _isEditingPhoneNumber = false;
-  final bool _isEditingEmail = false;
+  bool _isEditing = false;
 
-  // Variables to store the edited values
+  Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize edited values with the initial values
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color customColor = Color.fromRGBO(33, 84, 115, 1.0);
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title:  Text('Profile',style: TextStyle(color: customColor,fontSize: 25),),
         centerTitle: true,
-        backgroundColor:  Colors.white,),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200, // Background color for the container
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30.0,bottom: 20.0,left: 15.0,right: 15.0),
-          child: Center(
-            child: Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0), // Curved border radius for the card
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      const Center(
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color: customColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      ClipOval(
-                        child: Lottie.asset(
-                          'images/profile.json', // Replace with your animation file path
-                          width: 80,
-                          height: 80,
-                        ),
-                      ),
-                      const SizedBox(height: 30.0),
-                      buildEditableField(
-                        title: 'Name',
-                        isEditing: _isEditingName,
-                        controller: _nameController,
-                      ),
-                      const SizedBox(height: 15.0),
-                      buildEditableField(
-                        title: 'Phone Number',
-                        isEditing: _isEditingPhoneNumber,
-                        controller: _phoneNumberController,
-                      ),
-                      const SizedBox(height: 15.0),
-                      buildEditableField(
-                        title: 'Email',
-                        isEditing: _isEditingEmail,
-                        controller: _emailController,
-                      ),
-                      const SizedBox(height: 15.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              // Handle login logic here
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.pressed)) {
-                                    return const Color.fromRGBO(33, 37, 41, 1.0);
-                                  }
-                                  return const Color.fromRGBO(33, 84, 115, 1.0);
-                                },
-                              ),
-                            ),
-                            child: const Text(
-                              'Save',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
+        backgroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            ClipOval(
+              child: Lottie.asset(
+                'images/profile.json', // Replace with your animation file path
+                width: 80,
+                height: 80,
               ),
             ),
-          ),
+            const SizedBox(height: 30.0),
+            buildEditableField(
+              title: 'User ID',
+              controller: _userIdController,
+            ),
+            const SizedBox(height: 15.0),
+            buildEditableField(
+              title: 'Name',
+              controller: _nameController,
+            ),
+            const SizedBox(height: 15.0),
+            buildEditableField(
+              title: 'Email',
+              controller: _emailController,
+            ),
+            const SizedBox(height: 15.0),
+            buildEditableField(
+              title: 'Mobile',
+              controller: _mobileController,
+            ),
+            const SizedBox(height: 15.0),
+            buildEditableField(
+              title: 'Address',
+              controller: _addressController,
+            ),
+            const SizedBox(height: 15.0),
+            buildEditableField(
+              title: 'City',
+              controller: _cityController,
+            ),
+            const SizedBox(height: 15.0),
+            buildEditableField(
+              title: 'Pincode',
+              controller: _pincodeController,
+            ),
+            const SizedBox(height: 15.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Toggle editing mode
+                    setState(() {
+                      _isEditing = !_isEditing;
+                    });
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return const Color.fromRGBO(33, 84, 115, 1.0);
+                        }
+                        return const Color.fromRGBO(33, 37, 41, 1.0);
+                      },
+                    ),
+                  ),
+                  child: Text(_isEditing ? 'Cancel' : 'Edit', style: const TextStyle(color: Colors.white)),
+                ),
+                ElevatedButton(
+                  onPressed: _isEditing
+                      ? () async {
+                    showToast('Profile Updated Successfully');
+                    /* Perform save operation here */
+
+                    // Disable editing mode after saving
+                    setState(() {
+                      _isEditing = false;
+                    });
+                  }
+                      : null, // Disable the button if not editing
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return const Color.fromRGBO(33, 37, 41, 1.0);
+                        }
+                        return const Color.fromRGBO(33, 84, 115, 1.0);
+                      },
+                    ),
+                  ),
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 80.0),
+          ],
         ),
       ),
     );
@@ -129,7 +148,6 @@ class _SubVendorProfileScreenState extends State<SubVendorProfileScreen> {
 
   Widget buildEditableField({
     required String title,
-    required bool isEditing,
     required TextEditingController controller,
   }) {
     return Column(
@@ -151,40 +169,17 @@ class _SubVendorProfileScreenState extends State<SubVendorProfileScreen> {
             border: Border.all(color: Colors.transparent, width: 0),
             color: const Color.fromARGB(255, 241, 241, 241),
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  enabled: isEditing,
-                  controller: controller,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: title,
-                    hintStyle: const TextStyle(color: Colors.grey),
-                  ),
-                ),
-              ),
-              if (!isEditing)
-                const IconButton(
-                  icon: Icon(
-                    Icons.edit,
-                    color: Colors.black,
-                  ),
-                  onPressed: null, // Removed onPressed
-                ),
-            ],
+          child: TextFormField(
+            controller: controller,
+            enabled: _isEditing, // Enable or disable the text field based on the editing mode
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: title,
+              hintStyle: const TextStyle(color: Colors.grey),
+            ),
           ),
         ),
       ],
     );
   }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _phoneNumberController.dispose();
-    _emailController.dispose();
-    super.dispose();
-  }
 }
-
