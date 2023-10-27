@@ -1,4 +1,5 @@
 import 'package:absolute_stay/animatedbox/LocationDateDialog.dart';
+import 'package:absolute_stay/home/PropertyDetailPage.dart';
 import 'package:flutter/material.dart';
 
 
@@ -148,60 +149,75 @@ class PropertyCard extends StatelessWidget {
   final String distance;
   final String description;
 
-  const PropertyCard({super.key,
+  const PropertyCard({
+    Key? key,
     required this.image,
     required this.title,
     required this.price,
     required this.distance,
     required this.description,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity, // Set the width to match the card's width
-            height: 200, // Set a fixed height for the image
-            child: Image.asset(
-              image,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the property detail page here
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => PropertyDetailPage(
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8,),
-                Text(price,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                const SizedBox(height: 8,),
-                Text(distance,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                const SizedBox(height: 8,),
-                Text(description),
-              ],
+        );
+      },
+      child: Card(
+        elevation: 5,
+        margin: const EdgeInsets.only(bottom: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 200,
+              child: Image.asset(
+                image,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8,),
+                  Text(
+                    price,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  const SizedBox(height: 8,),
+                  Text(
+                    distance,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  const SizedBox(height: 8,),
+                  Text(description),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+

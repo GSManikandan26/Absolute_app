@@ -66,19 +66,22 @@ class _UnoccupiedListState extends State<UnoccupiedList> {
             final data = entry.value;
             return Column(
               children: [
-                PropertyCard(
-                  image: data.image,
-                  roomNumber: data.roomNumber,
-                  price: data.price,
-                  type: data.type,
-                  location: data.location,
-                  isPublished: data.isPublished,
-                  starRating: data.starRating,
-                  onPressed: () {
-                    togglePublishStatus(index);
-                  },
+                Visibility(
+                  visible: data.isPublished,
+                  child: PropertyCard(
+                    image: data.image,
+                    roomNumber: data.roomNumber,
+                    price: data.price,
+                    type: data.type,
+                    location: data.location,
+                    isPublished: data.isPublished,
+                    starRating: data.starRating,
+                    onPressed: () {
+                      togglePublishStatus(index);
+                    },
+                  ),
                 ),
-                const SizedBox(height: 25.0), // Add this SizedBox to create space between cards
+                const SizedBox(height: 25.0),
               ],
             );
           }).toList(),
@@ -151,9 +154,9 @@ class PropertyCard extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.all(8.0),
-                color: isPublished ? Colors.green : Colors.red,
+                color: isPublished ? Colors.red : Colors.red,
                 child: Text(
-                  isPublished ? "Occupied" : "Unoccupied",
+                  isPublished ? "Unoccupied" : "Unoccupied",
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -162,11 +165,9 @@ class PropertyCard extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.bottomRight,
-
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100, // Replace with your desired background color
-                    // Optional: Add rounded corners
+                    color: Colors.grey.shade100,
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Row(
@@ -200,7 +201,7 @@ class PropertyCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.location_on,
-                      color: customColor, // Set the custom color here
+                      color: customColor,
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -213,7 +214,7 @@ class PropertyCard extends StatelessWidget {
                     const SizedBox(width: 20),
                     Icon(
                       Icons.home,
-                      color: customColor, // Set the custom color here
+                      color: customColor,
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -229,19 +230,21 @@ class PropertyCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Card(
-                      elevation: 3,
-                      color: Colors.grey.shade100, // Change the color as needed
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Available Now',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                    ElevatedButton(
+                      onPressed: onPressed,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.pressed)) {
+                              return const Color.fromRGBO(33, 37, 41, 1.0);
+                            }
+                            return const Color.fromRGBO(33, 84, 115, 1.0);
+                          },
                         ),
+                      ),
+                      child: const Text(
+                        'Available Now',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ],
