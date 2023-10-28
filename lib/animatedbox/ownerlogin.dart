@@ -5,7 +5,7 @@ import '../usable/TextField.dart';
 
 
 class OwnerLoginForm extends StatefulWidget {
-  const OwnerLoginForm({Key? key});
+  const OwnerLoginForm({super.key, Key});
 
   @override
   _OwnerLoginFormState createState() => _OwnerLoginFormState();
