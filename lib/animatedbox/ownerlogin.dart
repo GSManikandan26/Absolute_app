@@ -257,7 +257,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                     ElevatedButton(
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
-                          showToast('Registered Successfully');
+                          showToast('Successfully');
                         }
                       },
                       style: ButtonStyle(
