@@ -15,6 +15,7 @@ import '../about/terms_and_conditions.dart';
 import '../home/homepage.dart';
 import 'MyProperty.dart';
 import 'Service.dart';
+import 'SubVendor_permission.dart';
 import 'TicketDetailsPage.dart';
 import 'owner_profile.dart';
 import 'payment_notification.dart';
@@ -35,6 +36,7 @@ class _AddPropertyState extends State<AddProperty> {
 
   final Map<String, IconData> menuIcons = {
     'Profile': Icons.account_circle,
+    'Add Sub-Vendor': Icons.person,
     'adminServices': Icons.business,
     'Tenant List': Icons.people,
     'My Property': Icons.apartment,
@@ -72,6 +74,18 @@ class _AddPropertyState extends State<AddProperty> {
     }
   }
 
+  void _showAnimatedDialog(BuildContext context, var val) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: val,
+        );
+      },
+    );
+  }
+
   void handleDrawerSelection(String value, BuildContext context) {
     switch (value) {
       case 'Tenant List':
@@ -85,6 +99,13 @@ class _AddPropertyState extends State<AddProperty> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const PaymentNotificationPage(),
+          ),
+        );
+        break;
+      case 'Add Sub-Vendor':
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const SubVendorPermission(),
           ),
         );
         break;
@@ -200,6 +221,13 @@ class _AddPropertyState extends State<AddProperty> {
                 title: const Text('My Property'),
                 onTap: () {
                   handleDrawerSelection('My Property', context);
+                },
+              ),
+              ListTile(
+                leading: Icon(menuIcons['Add Sub-Vendor']),
+                title: const Text('Add Sub-Vendor'),
+                onTap: () {
+                  _showAnimatedDialog(context, const SubVendorPermission());
                 },
               ),
               ListTile(

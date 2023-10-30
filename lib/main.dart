@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 void main()  {
   runApp(const MyApp());
 }
-//manikandan
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
@@ -19,5 +19,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-////////////  Hacker
