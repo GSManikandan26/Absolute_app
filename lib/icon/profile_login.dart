@@ -340,7 +340,7 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
   }
 
   void _handleLogin(BuildContext context) {
-    /*if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -366,7 +366,7 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
     } else if (_emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
       loginuser();
-    }else */if (_emailController.text == 'user@gmail.com' &&
+    } /*if (_emailController.text == 'user@gmail.com' &&
         _passwordController.text == 'user') {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -390,7 +390,7 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
               SubVendorHomePage(), // Replace with your vendor page
         ),
       );
-    } else {
+    }*/ else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
