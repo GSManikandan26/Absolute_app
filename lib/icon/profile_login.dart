@@ -1,12 +1,14 @@
 import 'package:absolute_stay/animatedbox/login_options.dart';
 import 'package:absolute_stay/owner/addProperty.dart';
+import 'package:absolute_stay/server/server_url.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:absolute_stay/sub_vendor/sub_vendor_homepage.dart';
 import 'package:absolute_stay/user/user_home.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import '../animatedbox/forgetpassword.dart';
-
+import 'package:absolute_stay/server/server_client.dart';
 class ProfileLoginScreen extends StatefulWidget {
   const ProfileLoginScreen({Key? key});
 
@@ -22,7 +24,51 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
 
   bool _isPasswordVisible = false;
   bool _isEmailValid = true;
+  String UserType='';
+Future<void>loginuser()async{
+final params={
+  "email": _emailController.text,
+  "password": _passwordController.text,
+};
+try{
+    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.login));
+if (data['status'] == 'success') {
+    File_server.setLDB("userID",data['data']['user_id']);
 
+                showToast('Login Successfully');
+                print("===============${data['data']}============");
+          if("${data['data']['type']}"=="User"){
+             Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const UserHomePage(), // Replace with your user page
+        ),
+      );
+          }
+     else if ("${data['data']['type']}"=="Owner") {
+       Navigator.of(context).pushReplacement(
+         MaterialPageRoute(
+           builder: (context) => const AddProperty(), // Replace with your owner page
+         ),
+       );
+     }
+     else if ("${data['data']['type']}"=="Vendor") {
+       Navigator.of(context).pushReplacement(
+         MaterialPageRoute(
+           builder: (context) => SubVendorHomePage(), // Replace with your vendor page
+         ),
+       );
+     }
+
+    }else{    
+               showToast('Somthing went wrong');
+  
+      print('Request failed: ${data['message']['type']}');
+}
+}catch(e){
+    print("Error in login $e");
+
+}
+}
 
   void showToast(String message) {
     Fluttertoast.showToast(
@@ -287,28 +333,30 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
           );
         },
       );
+    } else if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+    loginuser();
     }
-    else if (_emailController.text == 'user@gmail.com' && _passwordController.text == 'user') {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const UserHomePage(), // Replace with your user page
-        ),
-      );
-    }
-    else if (_emailController.text == 'owner@gmail.com' && _passwordController.text == 'owner') {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const AddProperty(), // Replace with your owner page
-        ),
-      );
-    }
-    else if (_emailController.text == 'vendor@gmail.com' && _passwordController.text == 'vendor') {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => SubVendorHomePage(), // Replace with your vendor page
-        ),
-      );
-    }
+    // else if (_emailController.text == 'user@gmail.com' && _passwordController.text == 'user') {
+    //   Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(
+    //       builder: (context) => const UserHomePage(), // Replace with your user page
+    //     ),
+    //   );
+    // }
+    // else if (_emailController.text == 'owner@gmail.com' && _passwordController.text == 'owner') {
+    //   Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(
+    //       builder: (context) => const AddProperty(), // Replace with your owner page
+    //     ),
+    //   );
+    // }
+    // else if (_emailController.text == 'vendor@gmail.com' && _passwordController.text == 'vendor') {
+    //   Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(
+    //       builder: (context) => SubVendorHomePage(), // Replace with your vendor page
+    //     ),
+    //   );
+    // }
     else {
       showDialog(
         context: context,

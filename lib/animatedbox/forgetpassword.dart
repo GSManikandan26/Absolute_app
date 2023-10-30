@@ -1,3 +1,7 @@
+import 'package:absolute_stay/server/server_client.dart';
+import 'package:absolute_stay/server/server_url.dart';
+import 'package:absolute_stay/usable/TextField.dart';
+import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
@@ -13,13 +17,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   double _dialogHeight = 0.0;
   final double _dialogWidth = 350;
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
-
+  bool isOtpsend=false;
+  bool isOtpverified=false;
   final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _otpcontroller = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+    final TextEditingController _reEnterPasswordController = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    isOtpsend=false;
+    isOtpverified=false;
     Future.delayed(const Duration(milliseconds: 50), () {
       setState(() {
         _dialogHeight = 450; // Set your preferred height
@@ -35,6 +46,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       return 'Enter a valid email address';
     }
     return null;
+  }
+
+  void forgototp(){
+
   }
 
   Widget buildEditableField({
@@ -75,14 +90,137 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
+// change password 
+Future<void>changePassword()async{
+final params={
+  "email": _emailController.text,
+  "newPassword": _passwordController.text
+ 
+};
+try{
+   final data= await serverClint.postData(params, serverUrl().geturl(RequestType.reset_password));
+       if (data['status'] == 'success') {
+             Fluttertoast.showToast(
+         msg: 'password Changed Successfully',
+         toastLength: Toast.LENGTH_SHORT,
+         gravity: ToastGravity.BOTTOM,
+         backgroundColor: Colors.black,
+         textColor: Colors.white,
+       );
+        setState(() {
+      isOtpsend=false;
+      isOtpverified=true;
+    });
+    Navigator.pop(context);
+       }else{
+           Fluttertoast.showToast(
+                              msg: 'Somthing went wrong!',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                            );
+      print('Request failed: ${data['message']}');
+       }
+
+   
+   
+}catch(e){
+  print("Exception occured: $e");
+
+}
+
+}
+
+
+//verify otp  
+Future<void>verifyotp()async{
+final params={
+    "email": _emailController.text,
+    "otp"  : _otpcontroller.text
+
+};
+try{
+   final data= await serverClint.postData(params, serverUrl().geturl(RequestType.verify_otp));
+       if (data['status'] == 'success') {
+             Fluttertoast.showToast(
+         msg: 'OTP verified Successfully',
+         toastLength: Toast.LENGTH_SHORT,
+         gravity: ToastGravity.BOTTOM,
+         backgroundColor: Colors.black,
+         textColor: Colors.white,
+       );
+        setState(() {
+      isOtpsend=false;
+      isOtpverified=true;
+    });
+       }else{
+           Fluttertoast.showToast(
+                              msg: 'Invalid OTP!',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                            );
+      print('Request failed: ${data['message']}');
+       }
+
+   
+   
+}catch(e){
+  print("Exception occured: $e");
+
+}
+
+}
+
+//forgot password
+Future<void>forgotPassword()async{
+final params={
+  "email" : _emailController.text
+};
+try{
+   final data= await serverClint.postData(params, serverUrl().geturl(RequestType.forgot_password));
+       if (data['status'] == 'success') {
+             Fluttertoast.showToast(
+         msg: 'Mail Sent Successfully',
+         toastLength: Toast.LENGTH_SHORT,
+         gravity: ToastGravity.BOTTOM,
+         backgroundColor: Colors.black,
+         textColor: Colors.white,
+       );
+        setState(() {
+      isOtpsend=true;
+    });
+       }else{
+           Fluttertoast.showToast(
+                              msg: 'Mail Sent Failed!',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                            );
+      print('Request failed: ${data['message']}');
+       }
+
+   
+   
+}catch(e){
+  print("Exception occured: $e");
+
+}
+
+}
+
   @override
   Widget build(BuildContext context) {
     const Color customColor = Color.fromRGBO(33, 84, 115, 1.0);
 
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 600),
       curve: Curves.easeInOut,
-      height: _dialogHeight,
+      height: _dialogHeight+35,
       width: _dialogWidth,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -133,20 +271,80 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(
                   height: 25.0,
                 ),
+                isOtpverified?
+                 InputField(
+                  title: 'Password',
+                  isSecured: true,
+                  controller: _passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Password is required';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                ):
                 buildEditableField(
                   title: 'Email',
                   controller: _emailController,
                   validator: _validateEmail, // Set the email validator
                 ),
                 const SizedBox(
-                  height: 30.0,
-                ),
+                  height: 30,
+                ), 
+                isOtpverified?
+                 InputField(
+                  title: 'Re-Enter Password',
+                  isSecured: true,
+                  controller: _reEnterPasswordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Re-enter your password';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                ):
+                isOtpsend?
+                 CustomTextField(
+                  maxlength: 6,
+                  title: 'OTP',
+                  controller: _otpcontroller,
+                  
+                  isSecured: false,
+                  validator: (value) {
+                    if (value == null || value.isEmpty || value.length != 6) {
+                      return 'Enter a valid 6-digit OTP';
+                    }
+                    return null;
+                  }, 
+                  keyboardType: TextInputType.phone,
+                  errorTextStyle: const TextStyle(color: Colors.red),
+                               ):SizedBox(),
+                SizedBox(height: 15,),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed:isOtpsend?(){
+                          Fluttertoast.showToast(
+                            msg: 'Verifying OTP...',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.black,
+                            textColor: Colors.white,
+                          );
+                        verifyotp();
+                      }:isOtpverified?(){
+                        changePassword();
+                      } : () {
                         if (_formKey.currentState!.validate()) {
+
+
                           // Show a toast message
                           Fluttertoast.showToast(
                             msg: 'Sending Mail...',
@@ -155,21 +353,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             backgroundColor: Colors.black,
                             textColor: Colors.white,
                           );
+                          forgotPassword();
 
-                          // Close the dialog
-                          Navigator.of(context).pop();
-
-                          // Simulate sending mail
-                          Future.delayed(const Duration(seconds: 2), () {
-                            // After sending mail, show another toast message
-                            Fluttertoast.showToast(
-                              msg: 'Mail Sent Successfully',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                            );
-                          });
+                        
                         }
                       },
                       style: ButtonStyle(
@@ -182,7 +368,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           },
                         ),
                       ),
-                      child: const Text(
+                      child:isOtpverified?Text(
+                        'Change',
+                        style: TextStyle(color: Colors.white),
+                      ): isOtpsend?Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ): Text(
                         'Send Mail',
                         style: TextStyle(color: Colors.white),
                       ),

@@ -1,7 +1,9 @@
+import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
+import 'package:absolute_stay/server/server_client.dart';
 
 class UserLoginForm extends StatefulWidget {
   const UserLoginForm({Key? key}) : super(key: key);
@@ -28,6 +30,39 @@ class _UserLoginFormState extends State<UserLoginForm> {
   String reEnterPassword = '';
 
   final _formkey = GlobalKey<FormState>();
+
+// Register 
+Future<void>RegisterUser()async{
+final params={
+  "name": _userNameController.text,
+  "email": _userEmailController.text,
+  "password": _passwordController.text,
+  "mobile":_phoneNumberController.text,
+  "type": "User",
+  "address":"address",
+  "latitude": 12.125,
+  "longitude": 14.561,
+  "city":"city",
+  "pincode":"pincode"};
+ 
+  try {
+    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.register));
+
+    if (data['status'] == 'success') {
+              showToast('Registered Successfully');
+              Navigator.pop(context);
+
+    }else{    
+         showToast('Somthing went wrong');
+  
+      print('Request failed: ${data['message']}');
+}
+  }catch(e){
+    print("Error in register $e");
+  }
+
+}
+
 
   @override
   void initState() {
@@ -211,6 +246,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                   },
                   keyboardType: TextInputType.phone,
                   errorTextStyle: const TextStyle(color: Colors.red),
+                  maxlength: 10,
                 ),
                 const SizedBox(height: 20),
                 InputField(
@@ -249,7 +285,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
                     ElevatedButton(
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
-                          showToast('Registered Successfully');
+                          RegisterUser();
                         }
                       },
                       style: ButtonStyle(

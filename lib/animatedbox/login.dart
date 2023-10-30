@@ -1,10 +1,15 @@
 import 'package:absolute_stay/animatedbox/login_options.dart';
 import 'package:absolute_stay/owner/addProperty.dart';
+import 'package:absolute_stay/server/server_url.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:absolute_stay/sub_vendor/sub_vendor_homepage.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:absolute_stay/user/user_home.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'forgetpassword.dart';
+import 'package:absolute_stay/server/server_client.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,6 +28,53 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+
+//Login 
+Future<void>loginuser()async{
+final params={
+  "email": _emailController.text,
+  "password": _passwordController.text,
+};
+
+try{
+    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.login));
+if (data['status'] == 'success') {
+  File_server.setLDB("userID",data['data']['user_id']);
+                showToast('Login Successfully');
+                print("===============${data['data']}============");
+          if("${data['data']['type']}"=="User"){
+             Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const UserHomePage(), // Replace with your user page
+        ),
+      );
+          }
+     else if ("${data['data']['type']}"=="Owner") {
+       Navigator.of(context).pushReplacement(
+         MaterialPageRoute(
+           builder: (context) => const AddProperty(), // Replace with your owner page
+         ),
+       );
+     }
+     else if ("${data['data']['type']}"=="Vendor") {
+       Navigator.of(context).pushReplacement(
+         MaterialPageRoute(
+           builder: (context) => SubVendorHomePage(), // Replace with your vendor page
+         ),
+       );
+     }
+
+    }else{    
+               showToast('Somthing went wrong');
+  
+      print('Request failed: ${data['message']['type']}');
+}
+}catch(e){
+    print("Error in login $e");
+
+}
+}
 
 
   @override
@@ -49,71 +101,81 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  void _loginUser(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      showDialog(
-        context: context,
-        barrierDismissible: false, // Prevent dialog dismissal while logging in
-        builder: (BuildContext context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      );
+  // void _loginUser(BuildContext context) {
+  //   if (_formKey.currentState!.validate()) {
+  //     showDialog(
+  //       context: context,
+  //       barrierDismissible: false, // Prevent dialog dismissal while logging in
+  //       builder: (BuildContext context) {
+  //         return const Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       },
+  //     );
 
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
+  //     String email = _emailController.text.trim();
+  //     String password = _passwordController.text.trim();
 
-      // Simulate a login delay (Replace this with your actual login logic)
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.of(context).pop(); // Close the progress indicator dialog
+  //     // Simulate a login delay (Replace this with your actual login logic)
+  //     Future.delayed(const Duration(seconds: 2), () {
+  //       Navigator.of(context).pop(); // Close the progress indicator dialog
 
-        if (email == 'user@gmail.com' && password == 'user') {
-          // Redirect to user-specific page
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const UserHomePage(), // Replace with your user page
-            ),
-          );
-        }
-        else if (email == 'owner@gmail.com' && password == 'owner') {
-          // Redirect to owner-specific page
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const AddProperty(), // Replace with your owner page
-            ),
-          );
-        }
-        else if (email == 'vendor@gmail.com' && password == 'vendor') {
-          // Redirect to owner-specific page
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) =>  SubVendorHomePage(), // Replace with your owner page
-            ),
-          );
-        }
-        else {
-          // Invalid email/password combination, show an error message
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Login Error'),
-                content: const Text('Invalid email or password.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      });
-    }
+  //       if (email == 'user@gmail.com' && password == 'user') {
+  //         // Redirect to user-specific page
+  //         Navigator.of(context).pushReplacement(
+  //           MaterialPageRoute(
+  //             builder: (context) => const UserHomePage(), // Replace with your user page
+  //           ),
+  //         );
+  //       }
+  //       else if (email == 'owner@gmail.com' && password == 'owner') {
+  //         // Redirect to owner-specific page
+  //         Navigator.of(context).pushReplacement(
+  //           MaterialPageRoute(
+  //             builder: (context) => const AddProperty(), // Replace with your owner page
+  //           ),
+  //         );
+  //       }
+  //       else if (email == 'vendor@gmail.com' && password == 'vendor') {
+  //         // Redirect to owner-specific page
+  //         Navigator.of(context).pushReplacement(
+  //           MaterialPageRoute(
+  //             builder: (context) =>  SubVendorHomePage(), // Replace with your owner page
+  //           ),
+  //         );
+  //       }
+  //       else {
+  //         // Invalid email/password combination, show an error message
+  //         showDialog(
+  //           context: context,
+  //           builder: (BuildContext context) {
+  //             return AlertDialog(
+  //               title: const Text('Login Error'),
+  //               content: const Text('Invalid email or password.'),
+  //               actions: <Widget>[
+  //                 TextButton(
+  //                   child: const Text('OK'),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                 ),
+  //               ],
+  //             );
+  //           },
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
+
+   void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
   }
 
   /*void _loginUser(BuildContext context) async {
@@ -244,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                      ElevatedButton(
-                      onPressed: () => _loginUser(context), // Pass context here
+                      onPressed: () => loginuser(), // Pass context here
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(
                               (Set<MaterialState> states) {

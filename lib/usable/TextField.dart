@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
   final Color backgroundColor;
+  final maxlength;
   final TextStyle? errorTextStyle; // Add the errorTextStyle parameter
 
   const CustomTextField({
@@ -21,7 +22,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.backgroundColor = const Color.fromARGB(255, 241, 241, 241),
-    this.errorTextStyle, // Initialize the errorTextStyle parameter
+    this.errorTextStyle, this.maxlength, // Initialize the errorTextStyle parameter
   }) : super(key: key);
 
   @override
@@ -64,7 +65,7 @@ class CustomTextField extends StatelessWidget {
                     : null,
               ),
               keyboardType: keyboardType,
-              maxLength: 10,
+              // maxLength: maxlength,
               validator: validator,
             ),
           ),

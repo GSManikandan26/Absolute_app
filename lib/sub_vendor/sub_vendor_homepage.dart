@@ -1,5 +1,6 @@
 import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/sub_vendor/ListingManagementPage.dart';
+import 'package:absolute_stay/user/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart'as launcher;
@@ -67,7 +68,7 @@ class SubVendorHomePage extends StatelessWidget {
       case 'Owner Profile':
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const SubVendorProfileScreen(),
+            builder: (context) => const UserProfileScreen(),
           ),
         );
         break;
