@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:absolute_stay/server/model/profile_model.dart';
-import 'package:absolute_stay/server/server_url.dart';
 import 'package:http/http.dart'as http;
 class serverClint{
 

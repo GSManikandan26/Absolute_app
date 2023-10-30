@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/owner/SuccessScreen.dart';
 import 'package:absolute_stay/server/serverstorage.dart';
+import 'package:absolute_stay/usable/PropertySelection.dart';
 import 'package:absolute_stay/user/user_profile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,8 @@ import '../about/terms_and_conditions.dart';
 import '../home/homepage.dart';
 import 'MyProperty.dart';
 import 'Service.dart';
+import 'SubVendor_permission.dart';
 import 'TicketDetailsPage.dart';
-import 'owner_profile.dart';
 import 'payment_notification.dart';
 import 'tenant_list.dart';
 import 'vacant_list.dart';
@@ -29,12 +30,12 @@ class AddProperty extends StatefulWidget {
 }
 
 class _AddPropertyState extends State<AddProperty> {
-  Color defaultColor = Colors.grey.shade100;
+
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
-  late Color selectedColor = customColor;
 
   final Map<String, IconData> menuIcons = {
     'Profile': Icons.account_circle,
+    'Add Sub-Vendor': Icons.person,
     'adminServices': Icons.business,
     'Tenant List': Icons.people,
     'My Property': Icons.apartment,
@@ -72,6 +73,18 @@ class _AddPropertyState extends State<AddProperty> {
     }
   }
 
+  void _showAnimatedDialog(BuildContext context, var val) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: val,
+        );
+      },
+    );
+  }
+
   void handleDrawerSelection(String value, BuildContext context) {
     switch (value) {
       case 'Tenant List':
@@ -85,6 +98,13 @@ class _AddPropertyState extends State<AddProperty> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const PaymentNotificationPage(),
+          ),
+        );
+        break;
+      case 'Add Sub-Vendor':
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const SubVendorPermission(),
           ),
         );
         break;
@@ -112,7 +132,7 @@ class _AddPropertyState extends State<AddProperty> {
       case 'Vacant List':
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>  VacantListPage(),
+            builder: (context) =>  const VacantListPage(),
           ),
         );
         break;
@@ -139,8 +159,6 @@ class _AddPropertyState extends State<AddProperty> {
     }
   }
 
-
-  String selectedPropertyType = '';
   List<File> imageFiles = [];
   List<File> roomImageFiles = [];
 
@@ -200,6 +218,13 @@ class _AddPropertyState extends State<AddProperty> {
                 title: const Text('My Property'),
                 onTap: () {
                   handleDrawerSelection('My Property', context);
+                },
+              ),
+              ListTile(
+                leading: Icon(menuIcons['Add Sub-Vendor']),
+                title: const Text('Add Sub-Vendor'),
+                onTap: () {
+                  _showAnimatedDialog(context, const SubVendorPermission());
                 },
               ),
               ListTile(
@@ -363,7 +388,7 @@ class _AddPropertyState extends State<AddProperty> {
                   const SizedBox(
                     height: 20,
                   ),
-                  _buildPropertyTypeButtons(),
+                  PropertySelection(),
                   const SizedBox(
                     height: 20,
                   ),
@@ -432,7 +457,7 @@ class _AddPropertyState extends State<AddProperty> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Which Features Does Your Property Have? Max 5 image',
+                            'Property Images? Max 5 image',
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,
@@ -568,7 +593,7 @@ class _AddPropertyState extends State<AddProperty> {
                     height: 20,
                   ),
                   _buildInputField(
-                    title: 'Room Prize',
+                    title: 'Room estimated Price',
                     controller: roomPriceController,
                   ),
                   const SizedBox(
@@ -921,93 +946,6 @@ class _AddPropertyState extends State<AddProperty> {
     'Heater',
     'Kitchen',
   ];
-
-  Widget _buildPropertyTypeButtons() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Property Type'),
-        const SizedBox(
-          height: 5,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () => _changePropertyType('Apartment'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selectedPropertyType == 'Apartment'
-                    ? selectedColor
-                    : defaultColor,
-              ),
-              child: Text(
-                'Apartment',
-                style: TextStyle(
-                  color: selectedPropertyType == 'Apartment'
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => _changePropertyType('Villa'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selectedPropertyType == 'Villa'
-                    ? selectedColor
-                    : defaultColor,
-              ),
-              child: Text(
-                'Villa',
-                style: TextStyle(
-                  color: selectedPropertyType == 'Villa'
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => _changePropertyType('Resort'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selectedPropertyType == 'Resort'
-                    ? selectedColor
-                    : defaultColor,
-              ),
-              child: Text(
-                'Resort',
-                style: TextStyle(
-                  color: selectedPropertyType == 'Resort'
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => _changePropertyType('PG'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selectedPropertyType == 'PG'
-                    ? selectedColor
-                    : defaultColor,
-              ),
-              child: Text(
-                'PG',
-                style: TextStyle(
-                  color: selectedPropertyType == 'PG'
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  void _changePropertyType(String type) {
-    setState(() {
-      selectedPropertyType = type;
-    });
-  }
 }
 
 

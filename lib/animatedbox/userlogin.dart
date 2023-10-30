@@ -286,6 +286,9 @@ final params={
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
                           RegisterUser();
+                          showToast('Registered Successfully');
+                        }else{
+                          showToast('Can\'t Register, Fill All Fields');
                         }
                       },
                       style: ButtonStyle(

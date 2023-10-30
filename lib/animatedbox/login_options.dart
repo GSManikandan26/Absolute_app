@@ -26,6 +26,7 @@ class _LoginOptionsState extends State<LoginOptions> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     Style style = Style();
@@ -61,7 +62,7 @@ class _LoginOptionsState extends State<LoginOptions> {
                   ],
                 ),
                 const Text(
-                  'Join',
+                  'Join as User/Vendor',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -69,7 +70,7 @@ class _LoginOptionsState extends State<LoginOptions> {
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'If you are\'nt registered yet,Then click on the Owner or User',
+                  'If you are\'nt registered yet,Then click on the Vendor or User',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,

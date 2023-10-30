@@ -1,68 +1,33 @@
-import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
-import 'package:absolute_stay/server/server_client.dart';
 
-
-class OwnerLoginForm extends StatefulWidget {
-  const OwnerLoginForm({super.key,});
-
+class SubVendorPermission extends StatefulWidget {
+  const SubVendorPermission({super.key});
 
   @override
-  _OwnerLoginFormState createState() => _OwnerLoginFormState();
+  State<SubVendorPermission> createState() => _SubVendorPermissionState();
 }
 
-class _OwnerLoginFormState extends State<OwnerLoginForm> {
+class _SubVendorPermissionState extends State<SubVendorPermission> {
   double _dialogHeight = 0.0;
   final double _dialogWidth = 400;
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
-  final TextEditingController _ownerNameController = TextEditingController();
-  final TextEditingController _ownerEmailController = TextEditingController();
+  final TextEditingController _subvendorNameController = TextEditingController();
+  final TextEditingController _subvendorEmailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _reEnterPasswordController = TextEditingController();
 
-  String ownerName = '';
-  String ownerEmail = '';
+  String subvendorName = '';
+  String subvendorEmail = '';
   String phoneNumber = '';
   String password = '';
   String reEnterPassword = '';
 
   final _formkey = GlobalKey<FormState>();
-
-//Register
-  Future<void>RegisterUser()async{
-    final params={
-      "name": _ownerNameController.text,
-      "email": _ownerEmailController.text,
-      "password": _passwordController.text,
-      "mobile":_phoneNumberController.text,
-      "type": "Vendor",
-      "address":"address",
-      "latitude": 12.125,
-      "longitude": 14.561,
-      "city":"city",
-      "pincode":"pincode"};
-
-    try {
-      final data = await serverClint.postData(params, serverUrl().geturl(RequestType.register));
-
-      if (data['status'] == 'success') {
-        showToast('Registered Successfully');
-
-      }else{
-        showToast('Somthing went wrong');
-
-        print('Request failed: ${data['message']}');
-      }
-    }catch(e){
-      print("Error in register $e");
-    }
-
-  }
 
   @override
   void initState() {
@@ -73,15 +38,15 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
       });
     });
 
-    _ownerNameController.addListener(() {
+    _subvendorNameController.addListener(() {
       setState(() {
-        ownerName = _ownerNameController.text;
+        subvendorName = _subvendorNameController.text;
       });
     });
 
-    _ownerEmailController.addListener(() {
+    _subvendorEmailController.addListener(() {
       setState(() {
-        ownerEmail = _ownerEmailController.text;
+        subvendorEmail = _subvendorEmailController.text;
       });
     });
 
@@ -107,8 +72,8 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
 
   @override
   void dispose() {
-    _ownerNameController.dispose();
-    _ownerEmailController.dispose();
+    _subvendorNameController.dispose();
+    _subvendorEmailController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
     _reEnterPasswordController.dispose();
@@ -187,7 +152,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                 const Column(
                   children: [
                     Text(
-                      'Vendor Login',
+                      'Appoint Sub-Vendor',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -197,7 +162,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                       height: 16,
                     ),
                     Text(
-                      'Unlock More Bookings, Elevate Your Business!',
+                      'Experience luxury and comfort at our hotel rooms, where your relaxation is our priority.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -209,12 +174,12 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                   height: 20,
                 ),
                 InputField(
-                  title: 'Vendor Name',
+                  title: 'Sub-Vendor Name',
                   isSecured: false,
-                  controller: _ownerNameController,
+                  controller: _subvendorNameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Vendor Name is required';
+                      return 'Owner Name is required';
                     }
                     return null;
                   },
@@ -223,9 +188,9 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                   height: 20,
                 ),
                 InputField(
-                  title: 'Vendor Email',
+                  title: 'Sub-Vendor Email',
                   isSecured: false,
-                  controller: _ownerEmailController,
+                  controller: _subvendorEmailController,
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
@@ -291,10 +256,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                     ElevatedButton(
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
-                          RegisterUser();
-                          showToast('Registered Successfully');
-                        }else{
-                          showToast('Can\'t Register, Fill All Fields');
+                          showToast('Sub-Vendor Added Successfully');
                         }
                       },
                       style: ButtonStyle(
@@ -308,7 +270,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                         ),
                       ),
                       child: const Text(
-                        'Register',
+                        'Add as Sub-Vendor',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

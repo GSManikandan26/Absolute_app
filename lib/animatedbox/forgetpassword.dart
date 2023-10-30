@@ -324,8 +324,8 @@ try{
                   }, 
                   keyboardType: TextInputType.phone,
                   errorTextStyle: const TextStyle(color: Colors.red),
-                               ):SizedBox(),
-                SizedBox(height: 15,),
+                               ):const SizedBox(),
+                const SizedBox(height: 15,),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -368,13 +368,13 @@ try{
                           },
                         ),
                       ),
-                      child:isOtpverified?Text(
+                      child:isOtpverified?const Text(
                         'Change',
                         style: TextStyle(color: Colors.white),
-                      ): isOtpsend?Text(
+                      ): isOtpsend?const Text(
                         'Submit',
                         style: TextStyle(color: Colors.white),
-                      ): Text(
+                      ): const Text(
                         'Send Mail',
                         style: TextStyle(color: Colors.white),
                       ),

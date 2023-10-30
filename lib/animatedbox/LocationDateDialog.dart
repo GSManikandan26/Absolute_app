@@ -97,7 +97,7 @@ class _LocationDateDialogState extends State<LocationDateDialog> {
                       ),
                     ],
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: SingleChildScrollView(
                       child: Column(

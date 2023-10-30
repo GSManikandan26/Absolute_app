@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'ownerCustomSwitch.dart'; // Import your custom switch widget.
 
 class MyPropertyApp extends StatefulWidget {
+  const MyPropertyApp({super.key});
+
   @override
   State<MyPropertyApp> createState() => _MyPropertyAppState();
 }
