@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:absolute_stay/server/model/profile_model.dart';
 import 'package:absolute_stay/server/server_client.dart';
 import 'package:absolute_stay/server/server_url.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
@@ -45,7 +46,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchprofile();
+    fetchProfile();
     
   }
 
@@ -54,31 +55,37 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
 
 // profileModel? data;
+ Future<void> fetchProfile() async {
+       var UserID = await File_server.getLDB("userID") ?? "";
 
-  Future<void>fetchprofile()async{
-     final params = {
-        "user_id": "82ef6ad9-1a82-4803-a0b3-dca184a366b6",
-      };
-    try{
-final data = await serverClint.postData(params, serverUrl().geturl(RequestType.getUserData));
-    _profile=profileModel.fromJson(data);
+  final params = {"user_id":"$UserID"};
 
-     setState(() {
+  try {
+    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.getUserData));
+
+    if (data['status'] == 'success') {
+      // Request was successful
+      _profile = profileModel.fromJson(data['data']);
+
+      setState(() {
         // Update your UI with the profile data
         _nameController.text = _profile!.name;
         _emailController.text = _profile!.email;
-        _mobileController.text = _profile!.type;
+        _mobileController.text = _profile!.mobile;
         _addressController.text = _profile!.address;
         _cityController.text = _profile!.city; // You can set a default value
         _pincodeController.text = _profile!.pincode;
-        isfetching=true; // You can set a default value
+        isfetching = true; // You can set a default value
       });
-    }catch(e){
-            print('Failed to fetch profile: $e');
-
+    } else {
+      // Request was not successful
+      print('Request failed: ${data['message']}');
     }
-
+  } catch (e) {
+    print('Failed to fetch profile: $e');
   }
+}
+
 
 
 
