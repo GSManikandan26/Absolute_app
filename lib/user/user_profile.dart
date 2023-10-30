@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:absolute_stay/server/model/profile_model.dart';
 import 'package:absolute_stay/server/server_client.dart';
 import 'package:absolute_stay/server/server_url.dart';
@@ -6,7 +5,6 @@ import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart'as http;
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -94,12 +92,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Profile',style: TextStyle(color: customColor,fontSize: 25),),
+        title:  const Text('Profile'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
       body:!isfetching
-            ? Center(child: SizedBox(child: const CircularProgressIndicator()))
+            ? const Center(child: SizedBox(child: CircularProgressIndicator()))
             : SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -1,4 +1,3 @@
-import 'package:absolute_stay/animatedbox/LocationDateDialog.dart';
 import 'package:absolute_stay/home/PropertyDetailPage.dart';
 import 'package:flutter/material.dart';
 
@@ -18,55 +17,19 @@ class _PropertyListingPageState extends State<PropertyListingPage> {
 
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
-  void _showAnimatedDialog(BuildContext context, var val) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: val,
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Property List'),
+        title:  const Text(
+          "300+ Places to Stay",
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              onPressed: () {
-                _showAnimatedDialog(context, const LocationDateDialog());
-              },
-              icon: Image.asset(
-                'images/filter.png',  // Replace 'your_image.png' with the actual image path
-                width: 30,  // Set the desired width for the image
-                height: 30, // Set the desired height for the image
-              ),
-            ),
-          ),
-        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(20.0),
         children: [
-          Center(
-            child: Text(
-              "300+ Places to Stay",
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: customColor
-              ),
-            ),
-          ),
-          const SizedBox(height: 20,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 10),
             child: DropdownButtonFormField<String>(
@@ -165,7 +128,7 @@ class PropertyCard extends StatelessWidget {
         // Navigate to the property detail page here
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => PropertyDetailPage(
+            builder: (context) => const PropertyDetailPage(
             ),
           ),
         );

@@ -36,7 +36,7 @@ class _SubVendorProfileScreenState extends State<SubVendorProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Profile',style: TextStyle(color: customColor,fontSize: 25),),
+        title:  const Text('Profile'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),

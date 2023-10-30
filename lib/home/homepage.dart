@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                           top: 24.0, bottom: 10.0, right: 12, left: 12),
                       child: Column(
                         children: [
-                          ImageCarousel(),
+                          const ImageCarousel(),
                           const SizedBox(height: 40),
                           const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

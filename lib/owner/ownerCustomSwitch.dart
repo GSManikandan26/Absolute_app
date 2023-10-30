@@ -25,7 +25,7 @@ class _OwnerCustomSwitchState extends State<OwnerCustomSwitch>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: 220.0,
           height: 100.0,
           child: Material(

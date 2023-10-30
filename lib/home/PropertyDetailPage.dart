@@ -2,6 +2,7 @@ import 'package:absolute_stay/usable/PropertySpecification.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PropertyDetailPage extends StatefulWidget {
   const PropertyDetailPage({super.key});
@@ -22,11 +23,21 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
 
   double starRating = 4.5; // Set your initial star rating here
 
+  void showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Property List'),
+        title: const Text('Property Details'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -124,23 +135,28 @@ class _PropertyDetailPageState extends State<PropertyDetailPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.favorite,
-                        color: customColor,
+                  GestureDetector(
+                    onTap: () {
+                      showToast('Added to Favorites');
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.favorite,
+                          color: customColor,
+                        ),
                       ),
                     ),
                   ),
-                  PropertySpecificationPopUp(),
+                  const PropertySpecificationPopUp(),
                 ],
-              ),
+              )
             ],
           ),
         ),

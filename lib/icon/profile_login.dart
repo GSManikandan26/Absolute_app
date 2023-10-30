@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 import '../animatedbox/forgetpassword.dart';
 import 'package:absolute_stay/server/server_client.dart';
+
 class ProfileLoginScreen extends StatefulWidget {
   const ProfileLoginScreen({Key? key});
 
@@ -20,55 +21,56 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-   Color customColor = Color.fromRGBO(33, 84, 115, 1.0);
+  Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
   bool _isPasswordVisible = false;
   bool _isEmailValid = true;
-  String UserType='';
-Future<void>loginuser()async{
-final params={
-  "email": _emailController.text,
-  "password": _passwordController.text,
-};
-try{
-    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.login));
-if (data['status'] == 'success') {
-    File_server.setLDB("userID",data['data']['user_id']);
+  String UserType = '';
 
-                showToast('Login Successfully');
-                print("===============${data['data']}============");
-          if("${data['data']['type']}"=="User"){
-             Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const UserHomePage(), // Replace with your user page
-        ),
-      );
-          }
-     else if ("${data['data']['type']}"=="Owner") {
-       Navigator.of(context).pushReplacement(
-         MaterialPageRoute(
-           builder: (context) => const AddProperty(), // Replace with your owner page
-         ),
-       );
-     }
-     else if ("${data['data']['type']}"=="Vendor") {
-       Navigator.of(context).pushReplacement(
-         MaterialPageRoute(
-           builder: (context) => SubVendorHomePage(), // Replace with your vendor page
-         ),
-       );
-     }
+  Future<void> loginuser() async {
+    final params = {
+      "email": _emailController.text,
+      "password": _passwordController.text,
+    };
+    try {
+      final data = await serverClint.postData(
+          params, serverUrl().geturl(RequestType.login));
+      if (data['status'] == 'success') {
+        File_server.setLDB("userID", data['data']['user_id']);
 
-    }else{    
-               showToast('Somthing went wrong');
-  
-      print('Request failed: ${data['message']['type']}');
-}
-}catch(e){
-    print("Error in login $e");
+        showToast('Login Successfully');
+        print("===============${data['data']}============");
+        if ("${data['data']['type']}" == "User") {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) =>
+                  const UserHomePage(), // Replace with your user page
+            ),
+          );
+        } else if ("${data['data']['type']}" == "Owner") {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) =>
+                  const AddProperty(), // Replace with your owner page
+            ),
+          );
+        } else if ("${data['data']['type']}" == "Vendor") {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) =>
+                  SubVendorHomePage(), // Replace with your vendor page
+            ),
+          );
+        }
+      } else {
+        showToast('Somthing went wrong');
 
-}
-}
+        print('Request failed: ${data['message']['type']}');
+      }
+    } catch (e) {
+      print("Error in login $e");
+    }
+  }
 
   void showToast(String message) {
     Fluttertoast.showToast(
@@ -88,7 +90,8 @@ if (data['status'] == 'success') {
           color: Colors.grey.shade200,
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 30.0, bottom: 20.0, left: 15.0, right: 15.0),
+          padding: const EdgeInsets.only(
+              top: 30.0, bottom: 20.0, left: 15.0, right: 15.0),
           child: Center(
             child: Card(
               elevation: 5,
@@ -101,7 +104,7 @@ if (data['status'] == 'success') {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                       Center(
+                      Center(
                         child: Text(
                           'Login',
                           style: TextStyle(
@@ -114,7 +117,8 @@ if (data['status'] == 'success') {
                       const SizedBox(height: 20.0),
                       ClipOval(
                         child: Lottie.asset(
-                          'images/profile.json', // Replace with your animation file path
+                          'images/profile.json',
+                          // Replace with your animation file path
                           width: 80,
                           height: 80,
                         ),
@@ -124,23 +128,32 @@ if (data['status'] == 'success') {
                         cursorColor: customColor,
                         controller: _emailController,
                         decoration: InputDecoration(
-                          labelText: 'Email', // Title or label text
+                          labelText: 'Email',
+                          // Title or label text
                           hintText: 'Email',
                           filled: true,
-                          contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // Adjust padding as needed
-                          errorText: _isEmailValid ? null : 'Enter a valid email address',
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 20.0),
+                          // Adjust padding as needed
+                          errorText: _isEmailValid
+                              ? null
+                              : 'Enter a valid email address',
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.transparent),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
-                            borderSide:BorderSide(
+                            borderSide: BorderSide(
                               color: customColor,
                             ),
                           ),
-                          labelStyle: const TextStyle(color: Colors.black), // Change the label text color here
-                          hintStyle: const TextStyle(color: Colors.grey), // Change the hint text color here
+                          labelStyle: const TextStyle(color: Colors.black),
+                          // Change the label text color here
+                          hintStyle: const TextStyle(
+                              color: Colors
+                                  .grey), // Change the hint text color here
                         ),
                         keyboardType: TextInputType.emailAddress,
                         onChanged: (value) {
@@ -153,12 +166,14 @@ if (data['status'] == 'success') {
                       TextField(
                         cursorColor: customColor,
                         controller: _passwordController,
-                        obscureText: !_isPasswordVisible, // Control the visibility of the password
+                        obscureText: !_isPasswordVisible,
+                        // Control the visibility of the password
                         decoration: InputDecoration(
                           hintText: 'Password',
                           labelText: 'Password',
                           filled: true,
-                          contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 20.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -169,10 +184,15 @@ if (data['status'] == 'success') {
                             ),
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(_isPasswordVisible ? Icons.visibility : Icons.visibility_off, color: customColor),
+                            icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: customColor),
                             onPressed: () {
                               setState(() {
-                                _isPasswordVisible = !_isPasswordVisible; // Toggle the visibility state
+                                _isPasswordVisible =
+                                    !_isPasswordVisible; // Toggle the visibility state
                               });
                             },
                           ),
@@ -184,7 +204,7 @@ if (data['status'] == 'success') {
                         height: 20,
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           _showAnimatedDialog(context, const ForgotPassword());
                         },
                         child: Container(
@@ -193,7 +213,8 @@ if (data['status'] == 'success') {
                           child: Text(
                             "Forgot password?",
                             style: TextStyle(
-                              color: customColor,fontSize: 16,
+                              color: customColor,
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -207,10 +228,12 @@ if (data['status'] == 'success') {
                               _handleLogin(context);
                             },
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.pressed)) {
-                                    return const Color.fromRGBO(33, 37, 41, 1.0);
+                                    return const Color.fromRGBO(
+                                        33, 37, 41, 1.0);
                                   }
                                   return const Color.fromRGBO(33, 84, 115, 1.0);
                                 },
@@ -228,7 +251,7 @@ if (data['status'] == 'success') {
                         onPressed: () async {
                           _showAnimatedDialog(context, const LoginOptions());
                         },
-                        child:  Text(
+                        child: Text(
                           "New User? SignUp",
                           style: TextStyle(color: customColor, fontSize: 15),
                         ),
@@ -291,7 +314,9 @@ if (data['status'] == 'success') {
                     });
                   },
                   icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                     color: Colors.grey,
                   ),
                 ),
@@ -315,7 +340,7 @@ if (data['status'] == 'success') {
   }
 
   void _handleLogin(BuildContext context) {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    /*if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -324,7 +349,12 @@ if (data['status'] == 'success') {
             content: const Text('Email and password fields cannot be empty.'),
             actions: <Widget>[
               TextButton(
-                child: Text('OK',style: TextStyle(color: customColor,),),
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    color: customColor,
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -333,31 +363,34 @@ if (data['status'] == 'success') {
           );
         },
       );
-    } else if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-    loginuser();
-    }
-    // else if (_emailController.text == 'user@gmail.com' && _passwordController.text == 'user') {
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder: (context) => const UserHomePage(), // Replace with your user page
-    //     ),
-    //   );
-    // }
-    // else if (_emailController.text == 'owner@gmail.com' && _passwordController.text == 'owner') {
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder: (context) => const AddProperty(), // Replace with your owner page
-    //     ),
-    //   );
-    // }
-    // else if (_emailController.text == 'vendor@gmail.com' && _passwordController.text == 'vendor') {
-    //   Navigator.of(context).pushReplacement(
-    //     MaterialPageRoute(
-    //       builder: (context) => SubVendorHomePage(), // Replace with your vendor page
-    //     ),
-    //   );
-    // }
-    else {
+    } else if (_emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      loginuser();
+    }else */if (_emailController.text == 'user@gmail.com' &&
+        _passwordController.text == 'user') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) =>
+              const UserHomePage(), // Replace with your user page
+        ),
+      );
+    } else if (_emailController.text == 'owner@gmail.com' &&
+        _passwordController.text == 'owner') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) =>
+              const AddProperty(), // Replace with your owner page
+        ),
+      );
+    } else if (_emailController.text == 'vendor@gmail.com' &&
+        _passwordController.text == 'vendor') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) =>
+              SubVendorHomePage(), // Replace with your vendor page
+        ),
+      );
+    } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -366,7 +399,12 @@ if (data['status'] == 'success') {
             content: const Text('Invalid email or password.'),
             actions: <Widget>[
               TextButton(
-                child: Text('OK',style: TextStyle(color: customColor,),),
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    color: customColor,
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

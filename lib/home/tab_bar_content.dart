@@ -90,7 +90,7 @@ class _CustomSwitchState extends State<CustomSwitch>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: 200.0,
           height: 100.0,
           child: Material(
@@ -106,7 +106,7 @@ class _CustomSwitchState extends State<CustomSwitch>
                         text: 'Customer',
                       ),
                       Tab(
-                        text: 'Owner',
+                        text: 'Vendor',
                       ),
                     ],
                     indicator: BoxDecoration(
@@ -131,7 +131,7 @@ class _CustomSwitchState extends State<CustomSwitch>
             ),
           ),
         ),
-        Container(
+        SizedBox(
           width: 300,
           height: 200,
           child: TimerBuilder.periodic(const Duration(seconds: 10), builder: (context) {

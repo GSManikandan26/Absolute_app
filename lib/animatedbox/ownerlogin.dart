@@ -197,7 +197,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                       height: 16,
                     ),
                     Text(
-                      'Experience luxury and comfort at our hotel rooms, where your relaxation is our priority.',
+                      'Unlock More Bookings, Elevate Your Business!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -209,12 +209,12 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                   height: 20,
                 ),
                 InputField(
-                  title: 'Owner Name',
+                  title: 'Vendor Name',
                   isSecured: false,
                   controller: _ownerNameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Owner Name is required';
+                      return 'Vendor Name is required';
                     }
                     return null;
                   },
@@ -223,7 +223,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                   height: 20,
                 ),
                 InputField(
-                  title: 'Owner Email',
+                  title: 'Vendor Email',
                   isSecured: false,
                   controller: _ownerEmailController,
                   validator: (value) {
@@ -291,8 +291,10 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                     ElevatedButton(
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
-
                           RegisterUser();
+                          showToast('Registered Successfully');
+                        }else{
+                          showToast('Can\'t Register, Fill All Fields');
                         }
                       },
                       style: ButtonStyle(
