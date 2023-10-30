@@ -1,7 +1,9 @@
+import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
+import 'package:absolute_stay/server/server_client.dart';
 
 
 class OwnerLoginForm extends StatefulWidget {
@@ -28,7 +30,38 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
   String password = '';
   String reEnterPassword = '';
 
-  final _formkey = GlobalKey<FormState>();
+  final _formkey = GlobalKey<FormState>(); 
+  
+//Register
+Future<void>RegisterUser()async{
+final params={
+  "name": _ownerNameController.text,
+  "email": _ownerEmailController.text,
+  "password": _passwordController.text,
+  "mobile":_phoneNumberController.text,
+  "type": "Vendor",
+  "address":"address",
+  "latitude": 12.125,
+  "longitude": 14.561,
+  "city":"city",
+  "pincode":"pincode"};
+
+  try {
+    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.register));
+
+    if (data['status'] == 'success') {
+                showToast('Registered Successfully');
+
+    }else{    
+               showToast('Somthing went wrong');
+  
+      print('Request failed: ${data['message']}');
+}
+  }catch(e){
+    print("Error in register $e");
+  }
+
+}
 
   @override
   void initState() {
@@ -258,8 +291,8 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
 
-                          showToast('ok working');
-                        }
+                      RegisterUser();
+                 }
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith<Color>(

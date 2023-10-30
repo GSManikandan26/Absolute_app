@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/owner/SuccessScreen.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
+import 'package:absolute_stay/user/user_profile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -96,7 +98,7 @@ class _AddPropertyState extends State<AddProperty> {
       case 'Owner Profile':
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const OwnerProfileScreen(),
+            builder: (context) => const UserProfileScreen(),
           ),
         );
         break;
@@ -123,6 +125,7 @@ class _AddPropertyState extends State<AddProperty> {
         break;
       case 'logout':
         Navigator.pop(context); // Close the drawer if it's open
+        File_server.clearAllLDB(context);
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
