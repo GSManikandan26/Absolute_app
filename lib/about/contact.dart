@@ -45,7 +45,7 @@ class _ContactPageState extends State<ContactPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: 400,
                 child: Card(

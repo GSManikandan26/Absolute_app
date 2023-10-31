@@ -1,11 +1,11 @@
 import 'package:absolute_stay/about/about.dart';
+import 'package:absolute_stay/owner/payment_notification.dart';
 import 'package:absolute_stay/sub_vendor/ListingManagementPage.dart';
+import 'package:absolute_stay/user/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart'as launcher;
 import 'ManageVacancyPage.dart';
-import 'sub_vendor_profile.dart';
-import 'subscriptionplan.dart';
 import '../about/cookie_policy.dart';
 import '../about/privacy_policy.dart';
 import '../about/terms_and_conditions.dart';
@@ -15,9 +15,10 @@ class SubVendorHomePage extends StatelessWidget {
   SubVendorHomePage({super.key});
   final Map<String, IconData> menuIcons = {
     'Profile': Icons.account_circle,
-    'Manage Listings': Icons.business,
-    'View Vacant Details': Icons.home,
-    'Subscription Plans': Icons.payment,
+    'List of the Tenants': Icons.business,
+    'Vacant List': Icons.home,
+    'Manage Payment': Icons.payment,
+    //'Subscription Plans': Icons.payment,
     'Owner Profile': Icons.perm_identity,
     'logout': Icons.exit_to_app,
   };
@@ -43,31 +44,38 @@ class SubVendorHomePage extends StatelessWidget {
 
   void handleDrawerSelection(String value, BuildContext context) {
     switch (value) {
-      case 'Manage Listings':
+      case 'List of the Tenants':
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const TenantListPage(),
           ),
         );
         break;
-      case 'View Vacant Details':
+      case 'Vacant List':
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => VacantListPage(),
           ),
         );
         break;
-      case 'Subscription Plans':
+      case 'Manage Payment':
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const PaymentNotificationPage(),
+          ),
+        );
+        break;
+      /*case 'Subscription Plans':
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const SubscriptionPlansPage(),
           ),
         );
-        break;
+        break;*/
       case 'Owner Profile':
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const SubVendorProfileScreen(),
+            builder: (context) => const UserProfileScreen(),
           ),
         );
         break;
@@ -122,24 +130,31 @@ class SubVendorHomePage extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Icon(menuIcons['Manage Listings']),
-                title: const Text('Manage Listings'),
+                leading: Icon(menuIcons['List of the Tenants']),
+                title: const Text('List of the Tenants'),
                 onTap: () {
-                  handleDrawerSelection('Manage Listings', context);
+                  handleDrawerSelection('List of the Tenants', context);
                 },
               ),
               ListTile(
-                leading: Icon(menuIcons['View Vacant Details']),
-                title: const Text('View Vacant Details'),
+                leading: Icon(menuIcons['Vacant List']),
+                title: const Text('Vacant List'),
                 onTap: () {
-                  handleDrawerSelection('View Vacant Details', context);
+                  handleDrawerSelection('Vacant List', context);
                 },
               ),
-              ListTile(
+              /*ListTile(
                 leading: Icon(menuIcons['Subscription Plans']),
                 title: const Text('Explore Subscription Plans'),
                 onTap: () {
                   handleDrawerSelection('Subscription Plans', context);
+                },
+              ),*/
+              ListTile(
+                leading: Icon(menuIcons['Manage Payment']),
+                title: const Text('Manage Payment'),
+                onTap: () {
+                  handleDrawerSelection('Manage Payment', context);
                 },
               ),
               ListTile(

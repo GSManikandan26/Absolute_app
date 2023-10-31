@@ -1,6 +1,11 @@
+import 'package:absolute_stay/server/model/profile_model.dart';
+import 'package:absolute_stay/server/server_client.dart';
+import 'package:absolute_stay/server/server_url.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
+import 'package:http/http.dart'as http;
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -17,9 +22,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _pincodeController = TextEditingController();
+   profileModel? _profile;
+
 
   bool _isEditing = false;
-
+  bool isfetching = false;
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
   void showToast(String message) {
@@ -32,19 +39,71 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchProfile();
+    
+  }
+
+
+
+
+
+// profileModel? data;
+ Future<void> fetchProfile() async {
+       var UserID = await File_server.getLDB("userID") ?? "";
+
+  final params = {"user_id":"$UserID"};
+
+  try {
+    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.getUserData));
+
+    if (data['status'] == 'success') {
+      // Request was successful
+      _profile = profileModel.fromJson(data['data']);
+
+      setState(() {
+        // Update your UI with the profile data
+        _nameController.text = _profile!.name;
+        _emailController.text = _profile!.email;
+        _mobileController.text = _profile!.mobile;
+        _addressController.text = _profile!.address;
+        _cityController.text = _profile!.city; // You can set a default value
+        _pincodeController.text = _profile!.pincode;
+        isfetching = true; // You can set a default value
+      });
+    } else {
+      // Request was not successful
+      print('Request failed: ${data['message']}');
+    }
+  } catch (e) {
+    print('Failed to fetch profile: $e');
+  }
+}
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Profile',style: TextStyle(color: customColor,fontSize: 25),),
+        title:  const Text('Profile'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
+      body:!isfetching
+            ? const Center(child: SizedBox(child: CircularProgressIndicator()))
+            : SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+          children: [
             ClipOval(
               child: Lottie.asset(
                 'images/profile.json', // Replace with your animation file path
@@ -53,10 +112,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             const SizedBox(height: 30.0),
-            buildEditableField(
-              title: 'User ID',
-              controller: _userIdController,
-            ),
+            // buildEditableField(
+            //   title: 'User ID',
+            //   controller: _userIdController,
+            // ),
             const SizedBox(height: 15.0),
             buildEditableField(
               title: 'Name',
@@ -64,7 +123,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             ),
             const SizedBox(height: 15.0),
             buildEditableField(
-              title: 'Email',
+              title:  'Email',
               controller: _emailController,
             ),
             const SizedBox(height: 15.0),

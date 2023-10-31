@@ -34,12 +34,14 @@ class _PaymentNotificationPageState extends State<PaymentNotificationPage> {
           },
         ),
       ),
-      body: PaymentList(),
+      body: const PaymentList(),
     );
   }
 }
 
 class PaymentList extends StatefulWidget {
+  const PaymentList({super.key});
+
   @override
   State<PaymentList> createState() => _PaymentListState();
 }

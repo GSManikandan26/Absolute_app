@@ -25,7 +25,7 @@ class _VacantCustomSwitchState extends State<VacantCustomSwitch>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: 220.0,
           height: 100.0,
           child: Material(

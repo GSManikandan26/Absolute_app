@@ -256,7 +256,7 @@ class _SubVendorPermissionState extends State<SubVendorPermission> {
                     ElevatedButton(
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
-                          showToast('Registered Successfully');
+                          showToast('Sub-Vendor Added Successfully');
                         }
                       },
                       style: ButtonStyle(
@@ -270,7 +270,7 @@ class _SubVendorPermissionState extends State<SubVendorPermission> {
                         ),
                       ),
                       child: const Text(
-                        'Register',
+                        'Add as Sub-Vendor',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
