@@ -1,5 +1,6 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-
+import 'NetworkCheckScreen.dart';
 import 'home/homepage.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,13 +14,25 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
+    _navigateToScreen();
+  }
+
+  Future<void> _navigateToScreen() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    await Future.delayed(const Duration(seconds: 2));
+    if (connectivityResult == ConnectivityResult.none) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => NetworkCheckScreen(),
+        ),
+      );
+    } else {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => const HomePage(),
         ),
       );
-    });
+    }
   }
 
   @override
