@@ -103,28 +103,28 @@ class _PropertySpecificationPopUpState extends State<PropertySpecificationPopUp>
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                DropdownButtonFormField<String>(
-                                  value: selectedLocation,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedLocation = newValue!;
-                                    });
-                                  },
-                                  items: locations.map((String location) {
-                                    return DropdownMenuItem<String>(
-                                      value: location,
-                                      child: Text(location),
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    icon: Icon(Icons.location_on, color: customColor),
-                                    labelText: 'Location',
-                                    labelStyle: TextStyle(color: customColor, fontSize: 22),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: customColor),
-                                    ),
-                                  ),
-                                ),
+                                // DropdownButtonFormField<String>(
+                                //   value: selectedLocation,
+                                //   onChanged: (String? newValue) {
+                                //     setState(() {
+                                //       selectedLocation = newValue!;
+                                //     });
+                                //   },
+                                //   items: locations.map((String location) {
+                                //     return DropdownMenuItem<String>(
+                                //       value: location,
+                                //       child: Text(location),
+                                //     );
+                                //   }).toList(),
+                                //   decoration: InputDecoration(
+                                //     icon: Icon(Icons.location_on, color: customColor),
+                                //     labelText: 'Location',
+                                //     labelStyle: TextStyle(color: customColor, fontSize: 22),
+                                //     focusedBorder: UnderlineInputBorder(
+                                //       borderSide: BorderSide(color: customColor),
+                                //     ),
+                                //   ),
+                                // ),
                                 DropdownButtonFormField<String>(
                                   value: selectedPreferred,
                                   onChanged: (String? newValue) {
@@ -147,28 +147,28 @@ class _PropertySpecificationPopUpState extends State<PropertySpecificationPopUp>
                                     ),
                                   ),
                                 ),
-                                DropdownButtonFormField<String>(
-                                  value: selectedBudget,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedBudget = newValue!;
-                                    });
-                                  },
-                                  items: budgetOptions.map((String budget) {
-                                    return DropdownMenuItem<String>(
-                                      value: budget,
-                                      child: Text(budget),
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    icon: Icon(Icons.monetization_on, color: customColor),
-                                    labelText: 'Budget',
-                                    labelStyle: TextStyle(color: customColor, fontSize: 22),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: customColor),
-                                    ),
-                                  ),
-                                ),
+                                // DropdownButtonFormField<String>(
+                                //   value: selectedBudget,
+                                //   onChanged: (String? newValue) {
+                                //     setState(() {
+                                //       selectedBudget = newValue!;
+                                //     });
+                                //   },
+                                //   items: budgetOptions.map((String budget) {
+                                //     return DropdownMenuItem<String>(
+                                //       value: budget,
+                                //       child: Text(budget),
+                                //     );
+                                //   }).toList(),
+                                //   decoration: InputDecoration(
+                                //     icon: Icon(Icons.monetization_on, color: customColor),
+                                //     labelText: 'Budget',
+                                //     labelStyle: TextStyle(color: customColor, fontSize: 22),
+                                //     focusedBorder: UnderlineInputBorder(
+                                //       borderSide: BorderSide(color: customColor),
+                                //     ),
+                                //   ),
+                                // ),
                                 DropdownButtonFormField<String>(
                                   value: selectedGender,
                                   onChanged: (String? newValue) {

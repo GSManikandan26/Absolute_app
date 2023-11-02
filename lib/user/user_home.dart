@@ -1,4 +1,5 @@
 import 'package:absolute_stay/home/PropertyListingPage.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:absolute_stay/user/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -477,6 +478,8 @@ class _UserHomePageState extends State<UserHomePage> {
                   onTap: () {
                     // Close the drawer or menu if it's open
                     Navigator.pop(context);
+                            File_server.clearAllLDB();
+
 
                     // Handle the logout action
                     Navigator.pushAndRemoveUntil(

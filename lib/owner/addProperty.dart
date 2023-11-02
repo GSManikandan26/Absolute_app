@@ -145,7 +145,7 @@ class _AddPropertyState extends State<AddProperty> {
         break;
       case 'logout':
         Navigator.pop(context); // Close the drawer if it's open
-        File_server.clearAllLDB(context);
+        File_server.clearAllLDB();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),

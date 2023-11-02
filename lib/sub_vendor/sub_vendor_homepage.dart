@@ -1,5 +1,6 @@
 import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/owner/payment_notification.dart';
+import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:absolute_stay/sub_vendor/ListingManagementPage.dart';
 import 'package:absolute_stay/user/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,7 @@ class SubVendorHomePage extends StatelessWidget {
         break;
       case 'logout':
         Navigator.pop(context); // Close the drawer if it's open
+        File_server.clearAllLDB();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),

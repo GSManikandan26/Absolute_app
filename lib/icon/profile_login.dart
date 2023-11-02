@@ -11,7 +11,7 @@ import '../animatedbox/forgetpassword.dart';
 import 'package:absolute_stay/server/server_client.dart';
 
 class ProfileLoginScreen extends StatefulWidget {
-  const ProfileLoginScreen({Key? key});
+  const ProfileLoginScreen({super.key});
 
   @override
   _ProfileLoginScreenState createState() => _ProfileLoginScreenState();
@@ -47,14 +47,14 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
                   const UserHomePage(), // Replace with your user page
             ),
           );
-        } else if ("${data['data']['type']}" == "Owner") {
+        } else if ("${data['data']['type']}" == "Vendor") {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) =>
                   const AddProperty(), // Replace with your owner page
             ),
           );
-        } else if ("${data['data']['type']}" == "Vendor") {
+        } else if ("${data['data']['type']}" == "SubVendor") {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) =>
