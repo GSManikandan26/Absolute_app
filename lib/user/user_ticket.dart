@@ -101,40 +101,40 @@ class UserTicket extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                InputField(
-                  title: 'Your Name',
-                  isSecured: false,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your full name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20.0,),
-                InputField(
-                  title: 'Email',
-                  isSecured: false,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    // Add email validation logic if needed
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20.0,),
-                InputField(
-                  title: 'Phone Number',
-                  isSecured: false,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
-                    }
-                    // Add phone number validation logic if needed
-                    return null;
-                  },
-                ),
+                // InputField(
+                //   title: 'Your Name',
+                //   isSecured: false,
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter your full name';
+                //     }
+                //     return null;
+                //   },
+                // ),
+                // const SizedBox(height: 20.0,),
+                // InputField(
+                //   title: 'Email',
+                //   isSecured: false,
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter your email';
+                //     }
+                //     // Add email validation logic if needed
+                //     return null;
+                //   },
+                // ),
+                // const SizedBox(height: 20.0,),
+                // InputField(
+                //   title: 'Phone Number',
+                //   isSecured: false,
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter your phone number';
+                //     }
+                //     // Add phone number validation logic if needed
+                //     return null;
+                //   },
+                // ),
                 const SizedBox(height: 20.0,),
                 InputField(
                   title: 'Message',

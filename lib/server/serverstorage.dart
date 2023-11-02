@@ -12,8 +12,8 @@ class File_server{
 
 
   // Clear All Local Data && Logout
-  static void clearAllLDB(BuildContext context) async {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>const LoginScreen(),));
+  static void clearAllLDB() async {
+    // Navigator.pushReplacement(context, MaterialPageRoute(builder:(context) =>const LoginScreen(),));
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.clear();
   }
