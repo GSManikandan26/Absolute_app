@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:absolute_stay/server/server_client.dart';
 import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/TextField.dart';
@@ -125,13 +127,33 @@ try{
 
    
    
-}catch(e){
-  print("Exception occured: $e");
+} catch (e) {
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Something went wrong',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('Something went wrong',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong',Colors.red);
+    }
+  }
 
 }
 
-}
-
+void showToast(String message, var color) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: color,
+      textColor:color==Colors.red?Colors.black: Colors.white,
+    );
+  }
 
 //verify otp  
 Future<void>verifyotp()async{
@@ -167,10 +189,21 @@ try{
 
    
    
-}catch(e){
-  print("Exception occured: $e");
-
-}
+} catch (e) {
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Something went wrong',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('Something went wrong',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong',Colors.red);
+    }
+  }
 
 }
 
@@ -205,10 +238,21 @@ try{
 
    
    
-}catch(e){
-  print("Exception occured: $e");
-
-}
+} catch (e) {
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Something went wrong',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('Something went wrong',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong',Colors.red);
+    }
+  }
 
 }
 

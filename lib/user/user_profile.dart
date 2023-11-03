@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:absolute_stay/server/model/profile_model.dart';
 import 'package:absolute_stay/server/server_client.dart';
 import 'package:absolute_stay/server/server_url.dart';
@@ -28,13 +30,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool isfetching = false;
   Color customColor = const Color.fromRGBO(33, 84, 115, 1.0);
 
-  void showToast(String message) {
+  void showToast(String message, var color) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
+      backgroundColor: color,
+      textColor:color==Colors.red?Colors.black: Colors.white,
     );
   }
 
@@ -79,11 +81,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       // Request was not successful
       print('Request failed: ${data['message']}');
     }
-  } catch (e) {
-    print('Failed to fetch profile: $e');
+  }  catch (e) {
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Something went wrong',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('Something went wrong',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong',Colors.red);
+    }
   }
 }
-
 
 
 
@@ -171,7 +184,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ElevatedButton(
                   onPressed: _isEditing
                       ? () async {
-                    showToast('Profile Updated Successfully');
+                    showToast('Profile Updated Successfully',Colors.black);
                     /* Perform save operation here */
 
                     // Disable editing mode after saving

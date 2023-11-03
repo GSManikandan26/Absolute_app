@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:absolute_stay/animatedbox/login_options.dart';
 import 'package:absolute_stay/owner/addProperty.dart';
 import 'package:absolute_stay/server/server_url.dart';
@@ -38,7 +40,7 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
       if (data['status'] == 'success') {
         File_server.setLDB("userID", data['data']['user_id']);
 
-        showToast('Login Successfully');
+        showToast('Login Successfully',Colors.black);
         print("===============${data['data']}============");
         if ("${data['data']['type']}" == "User") {
           Navigator.of(context).pushReplacement(
@@ -63,22 +65,34 @@ class _ProfileLoginScreenState extends State<ProfileLoginScreen> {
           );
         }
       } else {
-        showToast('Somthing went wrong');
+        showToast('Somthing went wrong',Colors.red);
 
         print('Request failed: ${data['message']['type']}');
       }
     } catch (e) {
-      print("Error in login $e");
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Something went wrong',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('Something went wrong',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong',Colors.red);
     }
   }
+  }
 
-  void showToast(String message) {
+void showToast(String message, var color) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
+      backgroundColor: color,
+      textColor:color==Colors.red?Colors.black: Colors.white,
     );
   }
 
