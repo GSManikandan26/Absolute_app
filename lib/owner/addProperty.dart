@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/owner/SuccessScreen.dart';
+import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/server/serverstorage.dart';
 import 'package:absolute_stay/usable/PropertySelection.dart';
 import 'package:absolute_stay/user/user_profile.dart';
@@ -21,6 +24,7 @@ import 'TicketDetailsPage.dart';
 import 'payment_notification.dart';
 import 'tenant_list.dart';
 import 'vacant_list.dart';
+import 'package:absolute_stay/server/server_client.dart';
 
 class AddProperty extends StatefulWidget {
   const AddProperty({Key? key}) : super(key: key);
@@ -45,13 +49,13 @@ class _AddPropertyState extends State<AddProperty> {
     'logout': Icons.exit_to_app,
   };
 
-  void showToast(String message) {
+  void showToast(String message, var color) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
+      backgroundColor: color,
+      textColor:color==Colors.red?Colors.black: Colors.white,
     );
   }
 
@@ -125,7 +129,7 @@ class _AddPropertyState extends State<AddProperty> {
       case 'My Property':
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>  MyPropertyApp(),
+            builder: (context) =>  const MyPropertyApp(),
           ),
         );
         break;
@@ -158,9 +162,12 @@ class _AddPropertyState extends State<AddProperty> {
         break;
     }
   }
+  
 
   List<File> imageFiles = [];
   List<File> roomImageFiles = [];
+  List<String>roomImageencode=[];
+  List<String>PropertyImageEncode=[];
 
   int _currentImageIndex = 0;
 
@@ -178,6 +185,60 @@ class _AddPropertyState extends State<AddProperty> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController roomPriceController = TextEditingController();
 
+
+ Future<void>RegisterUser()async{
+    final params={
+  "property_name": propertyNameController.text,
+  "property_type": "Apartment",
+  "roomType": ["Bedroom", "Living Room", "Kitchen"], // JSON string
+  "street_address": addressController.text,
+  "landmark": landmarkController.text,
+  "pincode": pincodeController.text,
+  "description": descriptionController.text,
+  "price": roomPriceController.text,
+  "status": "Created",
+  "status_vendor":"Created",
+  "gender": "Any",
+  "features": {
+    "beds": 2,
+    "bathrooms": 2,
+    "area_sqft": 1200
+  },
+  "room_images": [],
+  "appointment_images": [],
+  "latitude": 123.456,
+  "longitude": -78.901
+}
+;
+
+    try {
+      final data = await serverClint.postData(params, serverUrl().geturl(RequestType.addProperty));
+
+        if (data['status'] == 'success') {
+          print(roomImageencode);
+          print(PropertyImageEncode);
+      showToast('Registered Successfully',Colors.black);
+    } else {
+      showToast('Something went wrong',Colors.red);
+      print('Request failed: ${data['message']}');
+    }
+  } catch (e) {
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Network error: $e',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('HTTP error: $e',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong: $e',Colors.red);
+    }
+  }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -388,7 +449,7 @@ class _AddPropertyState extends State<AddProperty> {
                   const SizedBox(
                     height: 20,
                   ),
-                  PropertySelection(),
+                  const PropertySelection(),
                   const SizedBox(
                     height: 20,
                   ),
@@ -568,8 +629,12 @@ class _AddPropertyState extends State<AddProperty> {
                       );
 
                       if (pickedImage != null) {
+                         File image = File(pickedImage.path);
+                         Uint8List imagebytes = await image.readAsBytes();
                         setState(() {
                           imageFiles.add(File(pickedImage.path));
+                          PropertyImageEncode.add(base64.encode(imagebytes));
+                          print(PropertyImageEncode);
                         });
                       }
                     },
@@ -718,8 +783,11 @@ class _AddPropertyState extends State<AddProperty> {
                       );
 
                       if (pickedImage != null) {
+                         File image = File(pickedImage.path);
+                         Uint8List imagebytes = await image.readAsBytes();
                         setState(() {
                           roomImageFiles.add(File(pickedImage.path));
+                          roomImageencode.add(base64.encode(imagebytes));
                         });
                       }
                     },
@@ -846,7 +914,7 @@ class _AddPropertyState extends State<AddProperty> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          showToast('Saved Successfully');
+                          showToast('Saved Successfully',Colors.black);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -865,10 +933,11 @@ class _AddPropertyState extends State<AddProperty> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const SuccessScreen()),
-                          );
+                          RegisterUser();
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => const SuccessScreen()),
+                          // );
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith<Color>(

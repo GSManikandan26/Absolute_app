@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
@@ -50,17 +52,27 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     try {
       final data = await serverClint.postData(params, serverUrl().geturl(RequestType.register));
 
-      if (data['status'] == 'success') {
-        showToast('Registered Successfully');
-
-      }else{
-        showToast('Somthing went wrong');
-
-        print('Request failed: ${data['message']}');
-      }
-    }catch(e){
-      print("Error in register $e");
+        if (data['status'] == 'success') {
+      showToast('Registered Successfully',Colors.black);
+    } else {
+      showToast('Something went wrong',Colors.red);
+      print('Request failed: ${data['message']}');
     }
+  } catch (e) {
+    if (e is SocketException) {
+      // Handle network-related errors
+      print("Network error: $e");
+      showToast('Network error: $e',Colors.red);
+    } else if (e is HttpException) {
+      // Handle HTTP errors (e.g., 404 Not Found)
+      print("HTTP error: $e",);
+      showToast('HTTP error: $e',Colors.red);
+    } else {
+      // Handle other exceptions
+      print("Error in register: $e");
+      showToast('Something went wrong: $e',Colors.red);
+    }
+  }
 
   }
 
@@ -115,13 +127,13 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
     super.dispose();
   }
 
-  void showToast(String message) {
+  void showToast(String message, var color) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
+      backgroundColor: color,
+      textColor:color==Colors.red?Colors.black: Colors.white,
     );
   }
 
@@ -292,9 +304,9 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
                       onPressed: (){
                         if (_formkey.currentState!.validate()) {
                           RegisterUser();
-                          showToast('Registered Successfully');
+                          showToast('Registered Successfully',Colors.black);
                         }else{
-                          showToast('Can\'t Register, Fill All Fields');
+                          showToast('Can\'t Register, Fill All Fields',Colors.red);
                         }
                       },
                       style: ButtonStyle(
