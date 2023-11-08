@@ -2,15 +2,13 @@ import 'dart:io';
 
 import 'package:absolute_stay/animatedbox/login_options.dart';
 import 'package:absolute_stay/owner/addProperty.dart';
-import 'package:absolute_stay/server/server_url.dart';
-import 'package:absolute_stay/server/serverstorage.dart';
+
 import 'package:absolute_stay/sub_vendor/sub_vendor_homepage.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:absolute_stay/user/user_home.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'forgetpassword.dart';
-import 'package:absolute_stay/server/server_client.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -34,59 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 //Login 
 Future<void>loginuser()async{
-final params={
-  "email": _emailController.text,
-  "password": _passwordController.text,
-};
 
-try{
-    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.login));
-if (data['status'] == 'success') {
-  File_server.setLDB("userID",data['data']['user_id']);
-                showToast('Login Successfully',Colors.black);
-                print("===============${data['data']}============");
-          if("${data['data']['type']}"=="User"){
-             Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const UserHomePage(), // Replace with your user page
-        ),
-      );
-          }
-     else if ("${data['data']['type']}"=="Owner") {
-       Navigator.of(context).pushReplacement(
-         MaterialPageRoute(
-           builder: (context) => const AddProperty(), // Replace with your owner page
-         ),
-       );
-     }
-     else if ("${data['data']['type']}"=="Vendor") {
-       Navigator.of(context).pushReplacement(
-         MaterialPageRoute(
-           builder: (context) => SubVendorHomePage(), // Replace with your vendor page
-         ),
-       );
-     }
-
-    }else{    
-               showToast('Somthing went wrong',Colors.black);
-  
-      print('Request failed: ${data['message']['type']}');
-}
-} catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Something went wrong',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('Something went wrong',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong',Colors.red);
-    }
-  }
 }
 
 

@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:absolute_stay/server/server_client.dart';
-import 'package:absolute_stay/server/server_url.dart';
+
 import 'package:absolute_stay/usable/TextField.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
@@ -94,54 +93,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
 // change password 
 Future<void>changePassword()async{
-final params={
-  "email": _emailController.text,
-  "newPassword": _passwordController.text
- 
-};
-try{
-   final data= await serverClint.postData(params, serverUrl().geturl(RequestType.reset_password));
-       if (data['status'] == 'success') {
-             Fluttertoast.showToast(
-         msg: 'password Changed Successfully',
-         toastLength: Toast.LENGTH_SHORT,
-         gravity: ToastGravity.BOTTOM,
-         backgroundColor: Colors.black,
-         textColor: Colors.white,
-       );
-        setState(() {
-      isOtpsend=false;
-      isOtpverified=true;
-    });
-    Navigator.pop(context);
-       }else{
-           Fluttertoast.showToast(
-                              msg: 'Somthing went wrong!',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                            );
-      print('Request failed: ${data['message']}');
-       }
 
-   
-   
-} catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Something went wrong',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('Something went wrong',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong',Colors.red);
-    }
-  }
 
 }
 
@@ -157,102 +109,12 @@ void showToast(String message, var color) {
 
 //verify otp  
 Future<void>verifyotp()async{
-final params={
-    "email": _emailController.text,
-    "otp"  : _otpcontroller.text
-
-};
-try{
-   final data= await serverClint.postData(params, serverUrl().geturl(RequestType.verify_otp));
-       if (data['status'] == 'success') {
-             Fluttertoast.showToast(
-         msg: 'OTP verified Successfully',
-         toastLength: Toast.LENGTH_SHORT,
-         gravity: ToastGravity.BOTTOM,
-         backgroundColor: Colors.black,
-         textColor: Colors.white,
-       );
-        setState(() {
-      isOtpsend=false;
-      isOtpverified=true;
-    });
-       }else{
-           Fluttertoast.showToast(
-                              msg: 'Invalid OTP!',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                            );
-      print('Request failed: ${data['message']}');
-       }
-
-   
-   
-} catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Something went wrong',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('Something went wrong',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong',Colors.red);
-    }
-  }
 
 }
 
 //forgot password
 Future<void>forgotPassword()async{
-final params={
-  "email" : _emailController.text
-};
-try{
-   final data= await serverClint.postData(params, serverUrl().geturl(RequestType.forgot_password));
-       if (data['status'] == 'success') {
-             Fluttertoast.showToast(
-         msg: 'Mail Sent Successfully',
-         toastLength: Toast.LENGTH_SHORT,
-         gravity: ToastGravity.BOTTOM,
-         backgroundColor: Colors.black,
-         textColor: Colors.white,
-       );
-        setState(() {
-      isOtpsend=true;
-    });
-       }else{
-           Fluttertoast.showToast(
-                              msg: 'Mail Sent Failed!',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                            );
-      print('Request failed: ${data['message']}');
-       }
 
-   
-   
-} catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Something went wrong',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('Something went wrong',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong',Colors.red);
-    }
-  }
 
 }
 

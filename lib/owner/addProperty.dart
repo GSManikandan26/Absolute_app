@@ -3,14 +3,16 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:absolute_stay/about/about.dart';
 import 'package:absolute_stay/owner/SuccessScreen.dart';
-import 'package:absolute_stay/server/server_url.dart';
-import 'package:absolute_stay/server/serverstorage.dart';
+import 'package:absolute_stay/owner/approved_content.dart';
+
 import 'package:absolute_stay/usable/PropertySelection.dart';
 import 'package:absolute_stay/user/user_profile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:googleapis_auth/auth.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 import '../about/cookie_policy.dart';
@@ -24,7 +26,7 @@ import 'TicketDetailsPage.dart';
 import 'payment_notification.dart';
 import 'tenant_list.dart';
 import 'vacant_list.dart';
-import 'package:absolute_stay/server/server_client.dart';
+import 'package:http/http.dart'as http;
 
 class AddProperty extends StatefulWidget {
   const AddProperty({Key? key}) : super(key: key);
@@ -129,7 +131,7 @@ class _AddPropertyState extends State<AddProperty> {
       case 'My Property':
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>  const MyPropertyApp(),
+            builder: (context) =>  const ApprovedContent(),
           ),
         );
         break;
@@ -149,7 +151,6 @@ class _AddPropertyState extends State<AddProperty> {
         break;
       case 'logout':
         Navigator.pop(context); // Close the drawer if it's open
-        File_server.clearAllLDB();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
@@ -166,8 +167,8 @@ class _AddPropertyState extends State<AddProperty> {
 
   List<File> imageFiles = [];
   List<File> roomImageFiles = [];
-  List<String>roomImageencode=[];
-  List<String>PropertyImageEncode=[];
+  List<File> roomImages = [];
+  List<File> propertyImages = [];
 
   int _currentImageIndex = 0;
 
@@ -178,6 +179,8 @@ class _AddPropertyState extends State<AddProperty> {
     // Add more image paths here
   ];
 
+
+
   TextEditingController propertyNameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController landmarkController = TextEditingController();
@@ -185,60 +188,94 @@ class _AddPropertyState extends State<AddProperty> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController roomPriceController = TextEditingController();
 
+// Future<void> _uploadProperty() async {
+//     final request = http.MultipartRequest('POST', Uri.parse(serverUrl().geturl(RequestType.upload_property)));
+//     request.fields['property_name'] = propertyNameController.text;
+//     request.fields['property_type'] = "Appartment";
+//         request.fields['roomType'] = ["Bedroom", "Living Room", "Kitchen"].toString();
+//     request.fields['street_address'] = addressController.text;
+//     request.fields['landmark'] = landmarkController.text;
+//     request.fields['pincode'] = pincodeController.text;
+//     request.fields['description'] = descriptionController.text;
+//     request.fields['price'] = roomPriceController.text;
+//     request.fields['status'] = "updated";
+//     request.fields['vendor_id'] ="idd";
+//     request.fields['status_vendor'] = "created";
+//     request.fields['gender'] = "any";
+//     request.fields['features'] = ['ac','pc'].toString();
+//         request.fields['latitude'] = '124.25';
+//     request.fields['longitude'] = '78.25';
 
- Future<void>RegisterUser()async{
-    final params={
-  "property_name": propertyNameController.text,
-  "property_type": "Apartment",
-  "roomType": ["Bedroom", "Living Room", "Kitchen"], // JSON string
-  "street_address": addressController.text,
-  "landmark": landmarkController.text,
-  "pincode": pincodeController.text,
-  "description": descriptionController.text,
-  "price": roomPriceController.text,
-  "status": "Created",
-  "status_vendor":"Created",
-  "gender": "Any",
-  "features": {
-    "beds": 2,
-    "bathrooms": 2,
-    "area_sqft": 1200
-  },
-  "room_images": [],
-  "appointment_images": [],
-  "latitude": 123.456,
-  "longitude": -78.901
+
+//     // Add fields for other property data
+
+//     for (int i = 0; i < roomImages.length; i++) {
+//       request.files.add(
+//         await http.MultipartFile.fromPath('room_images', roomImages[i].path),
+//       );
+//     }
+
+//     for (int i = 0; i < propertyImages.length; i++) {
+//       request.files.add(
+//         await http.MultipartFile.fromPath('property_images', propertyImages[i].path),
+//       );
+//     }
+
+//     try {
+//       final response = await request.send();
+//       print("+++++++++++++++$response");
+//               final responseBody = await response.stream.bytesToString();
+//         final propertyData = json.decode(responseBody);
+//         print(propertyData);
+//         print(responseBody);
+//       print("$request +++++++++++++++++++");
+//       if (response.statusCode == 200) {
+
+//         // Handle the response as needed
+//         print('Property data uploaded: $propertyData');
+//       } else {
+//         // Handle the error response
+//         print('Error uploading property data');
+//       }
+//     } catch (e) {
+//       // Handle network or other errors
+//       print('Error: $e');
+//     }
+//   }
+
+Future<void> _pickImages({bool isRoomImage = true}) async {
+  final picker = ImagePicker();
+  final pickedImages = await picker.pickMultiImage();
+
+  if (pickedImages.isNotEmpty) {
+    if (isRoomImage) {
+      setState(() {
+        roomImages = pickedImages.map((xfile) => File(xfile.path)).toList();
+      });
+    } else {
+      setState(() {
+        propertyImages = pickedImages.map((xfile) => File(xfile.path)).toList();
+      });
+    }
+  }
 }
-;
 
-    try {
-      final data = await serverClint.postData(params, serverUrl().geturl(RequestType.addProperty));
+Future<void> registerUser() async {
 
-        if (data['status'] == 'success') {
-          print(roomImageencode);
-          print(PropertyImageEncode);
-      showToast('Registered Successfully',Colors.black);
-    } else {
-      showToast('Something went wrong',Colors.red);
-      print('Request failed: ${data['message']}');
-    }
-  } catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Network error: $e',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('HTTP error: $e',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong: $e',Colors.red);
-    }
+}
+
+Future<List<String>> _encodeImages(List<File> images) async {
+  final encodedImages = <String>[];
+  for (var image in images) {
+    final bytes = await image.readAsBytes();
+    final base64String = 'data:image/jpeg;base64,' + base64Encode(Uint8List.fromList(bytes));
+    encodedImages.add(base64String);
   }
+  return encodedImages;
+}
 
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -623,20 +660,8 @@ class _AddPropertyState extends State<AddProperty> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () async {
-                      final picker = ImagePicker();
-                      final pickedImage = await picker.pickImage(
-                        source: ImageSource.gallery,
-                      );
+           _pickImages(isRoomImage: false);
 
-                      if (pickedImage != null) {
-                         File image = File(pickedImage.path);
-                         Uint8List imagebytes = await image.readAsBytes();
-                        setState(() {
-                          imageFiles.add(File(pickedImage.path));
-                          PropertyImageEncode.add(base64.encode(imagebytes));
-                          print(PropertyImageEncode);
-                        });
-                      }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -777,19 +802,7 @@ class _AddPropertyState extends State<AddProperty> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () async {
-                      final picker = ImagePicker();
-                      final pickedImage = await picker.pickImage(
-                        source: ImageSource.gallery,
-                      );
-
-                      if (pickedImage != null) {
-                         File image = File(pickedImage.path);
-                         Uint8List imagebytes = await image.readAsBytes();
-                        setState(() {
-                          roomImageFiles.add(File(pickedImage.path));
-                          roomImageencode.add(base64.encode(imagebytes));
-                        });
-                      }
+                _pickImages(isRoomImage: true);
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -933,7 +946,7 @@ class _AddPropertyState extends State<AddProperty> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          RegisterUser();
+                          registerUser();
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(builder: (context) => const SuccessScreen()),
@@ -1016,5 +1029,4 @@ class _AddPropertyState extends State<AddProperty> {
     'Kitchen',
   ];
 }
-
 

@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
-import 'package:absolute_stay/server/server_client.dart';
 
 class UserLoginForm extends StatefulWidget {
   const UserLoginForm({Key? key}) : super(key: key);
@@ -35,45 +33,7 @@ class _UserLoginFormState extends State<UserLoginForm> {
 
 // Register 
 Future<void>RegisterUser()async{
-final params={
-  "name": _userNameController.text,
-  "email": _userEmailController.text,
-  "password": _passwordController.text,
-  "mobile":_phoneNumberController.text,
-  "type": "User",
-  "address":"address",
-  "latitude": 12.125,
-  "longitude": 14.561,
-  "city":"city",
-  "pincode":"pincode"};
- 
-  try {
-    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.register));
 
-    if (data['status'] == 'success') {
-              showToast('Registered Successfully',Colors.black);
-              Navigator.pop(context);
-
-    }else{    
-         showToast('Somthing went wrong',Colors.red);
-  
-      print('Request failed: ${data['message']}');
-}
-  } catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Something went wrong',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('Something went wrong',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong',Colors.red);
-    }
-  }
 
 }
 
