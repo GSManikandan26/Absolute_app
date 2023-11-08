@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:absolute_stay/server/model/profile_model.dart';
-import 'package:absolute_stay/server/server_client.dart';
-import 'package:absolute_stay/server/server_url.dart';
-import 'package:absolute_stay/server/serverstorage.dart';
+
+import 'package:absolute_stay/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
@@ -23,7 +21,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _pincodeController = TextEditingController();
-   profileModel? _profile;
+   UserModel? _profile;
 
 
   bool _isEditing = false;
@@ -56,46 +54,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
 // profileModel? data;
  Future<void> fetchProfile() async {
-       var UserID = await File_server.getLDB("userID") ?? "";
-
-  final params = {"user_id":"$UserID"};
-
-  try {
-    final data = await serverClint.postData(params, serverUrl().geturl(RequestType.getUserData));
-
-    if (data['status'] == 'success') {
-      // Request was successful
-      _profile = profileModel.fromJson(data['data']);
-
-      setState(() {
-        // Update your UI with the profile data
-        _nameController.text = _profile!.name;
-        _emailController.text = _profile!.email;
-        _mobileController.text = _profile!.mobile;
-        _addressController.text = _profile!.address;
-        _cityController.text = _profile!.city; // You can set a default value
-        _pincodeController.text = _profile!.pincode;
-        isfetching = true; // You can set a default value
-      });
-    } else {
-      // Request was not successful
-      print('Request failed: ${data['message']}');
-    }
-  }  catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Something went wrong',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('Something went wrong',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong',Colors.red);
-    }
-  }
+ 
 }
 
 

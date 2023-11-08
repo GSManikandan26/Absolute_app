@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:absolute_stay/server/server_url.dart';
 import 'package:absolute_stay/usable/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../usable/TextField.dart';
-import 'package:absolute_stay/server/server_client.dart';
 
 
 class OwnerLoginForm extends StatefulWidget {
@@ -37,42 +35,7 @@ class _OwnerLoginFormState extends State<OwnerLoginForm> {
 
 //Register
   Future<void>RegisterUser()async{
-    final params={
-      "name": _ownerNameController.text,
-      "email": _ownerEmailController.text,
-      "password": _passwordController.text,
-      "mobile":_phoneNumberController.text,
-      "type": "Vendor",
-      "address":"address",
-      "latitude": 12.125,
-      "longitude": 14.561,
-      "city":"city",
-      "pincode":"pincode"};
 
-    try {
-      final data = await serverClint.postData(params, serverUrl().geturl(RequestType.register));
-
-        if (data['status'] == 'success') {
-      showToast('Registered Successfully',Colors.black);
-    } else {
-      showToast('Something went wrong',Colors.red);
-      print('Request failed: ${data['message']}');
-    }
-  } catch (e) {
-    if (e is SocketException) {
-      // Handle network-related errors
-      print("Network error: $e");
-      showToast('Network error: $e',Colors.red);
-    } else if (e is HttpException) {
-      // Handle HTTP errors (e.g., 404 Not Found)
-      print("HTTP error: $e",);
-      showToast('HTTP error: $e',Colors.red);
-    } else {
-      // Handle other exceptions
-      print("Error in register: $e");
-      showToast('Something went wrong: $e',Colors.red);
-    }
-  }
 
   }
 
